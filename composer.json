@@ -1,0 +1,24 @@
+{
+    "name": "delboy1978uk/common",
+    "description": "Stuff that winds up in every project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Derek Stephen McLean",
+            "email": "delboy1978uk@gmail.com"
+        }
+    ],
+    "require": {
+      "doctrine/orm": "2.5.1",
+      "doctrine/migrations": "1.1.0",
+      "pimple/pimple": "3.0.2"
+    },
+    "require-dev":{
+        "codeception/codeception":"dev-master"
+    },
+    "autoload":{
+        "psr-4":{
+            "Del\\Common\\":"src/"
+        }
+    }
+}
