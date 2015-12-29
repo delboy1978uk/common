@@ -10,13 +10,13 @@ class ContainerTest extends \Codeception\TestCase\Test
     protected $tester;
 
     /**
-     * @var Container
+     * @var ContainerService
      */
     protected $containerSvc;
 
     protected function _before()
     {
-        $this->containerSvc = Container::getInstance();
+        $this->containerSvc = ContainerService::getInstance();
     }
 
     protected function _after()
