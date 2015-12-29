@@ -12,30 +12,43 @@ class ContainerTest extends \Codeception\TestCase\Test
     /**
      * @var Container
      */
-    protected $container;
+    protected $containerSvc;
 
     protected function _before()
     {
-        $this->container = Container::getContainer();
+        $this->containerSvc = Container::getInstance();
     }
 
     protected function _after()
     {
-        unset($this->container);
+        unset($this->containerSvc);
     }
 
 
     public function testCanGetContainer()
     {
-        $this->assertInstanceOf('Pimple\Container',$this->container);
+        $this->assertInstanceOf('Pimple\Container',$this->containerSvc->getContainer());
+    }
+
+    public function testCanGetAndSetCredentials()
+    {
+        $this->containerSvc->setDbCredentials([
+            'driver' => 'pdo_mysql',
+            'dbname' => 'testdb',
+            'user' => 'testuser',
+            'password' => '[123456]',
+        ]);
+
+        $creds = $this->containerSvc->getDbCredentials();
+        $this->assertTrue(is_array($creds));
+        $this->assertEquals('testuser', $creds['user']);
     }
 
 
     public function testCanGetEntityManager()
     {
-        $em = $this->container['doctrine.entity_manager'];
+        $em = $this->containerSvc->getContainer()['doctrine.entity_manager'];
         $this->assertInstanceOf('Doctrine\ORM\EntityManager',$em);
     }
-
 
 }
