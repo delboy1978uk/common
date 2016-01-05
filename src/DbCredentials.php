@@ -14,7 +14,7 @@ class DbCredentials
         $this->credentials = [];
         if($array != null){
             $this->credentials['driver'] = $array['driver'] ?: 'pdo_mysql';
-            $this->credentials['database'] = $array['database'] ?: 'delboy1978uk';
+            $this->credentials['dbname'] = $array['dbname'] ?: 'delboy1978uk';
             $this->credentials['user'] = $array['user'] ?: 'dbuser';
             $this->credentials['password'] = $array['password'] ?: '[123456]';
         }

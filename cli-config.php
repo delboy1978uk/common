@@ -44,7 +44,9 @@ $status = new StatusCommand();
 $ver = new VersionCommand();
 
 $diff->setMigrationConfiguration($configuration);
+$gen->setMigrationConfiguration($configuration);
 $migrate->setMigrationConfiguration($configuration);
+$status->setMigrationConfiguration($configuration);
 
 
 $cli = ConsoleRunner::createApplication($helperSet,[
