@@ -11,7 +11,8 @@
     "require": {
       "doctrine/orm": "2.5.1",
       "doctrine/migrations": "1.1.0",
-      "pimple/pimple": "3.0.2"
+      "pimple/pimple": "3.0.2",
+      "symfony/console": "*"
     },
     "require-dev":{
         "codeception/codeception":"dev-master"

@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+require_once('vendor/autoload.php');
+
+use Del\Common\Command\Migration;
+use Del\Common\ContainerService;
+use Del\Common\DbCredentials;
+use Symfony\Component\Console\Application;
+
+
+$credentials = new DbCredentials();
+$container = ContainerService::getInstance()
+    ->setDbCredentials($credentials->toArray())
+    ->getContainer();
+
+
+// Fetch the entity Manager
+$em = $container['doctrine.entity_manager'];
+
+$app = new Application();
+$mig = new Migration();
+$app->add($mig);
+$app->run();
