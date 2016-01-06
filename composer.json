@@ -22,7 +22,5 @@
             "Del\\Common\\":"src/"
         }
     },
-    "bin": {
-        "bin/migrant"
-    }
+    "bin": [ "bin/migrant"]
 }
