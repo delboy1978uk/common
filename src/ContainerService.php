@@ -2,12 +2,26 @@
 namespace Del\Common;
 
 use Pimple\Container as PimpleContainer;
+use Del\Common\Container\RegistrationInterface;
+use Del\Common\Config\DbCredentials;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
 class ContainerService
 {
+    /**
+     * @var PimpleContainer
+     */
+    private $container;
+
+    /**
+     * @var DbCredentials
+     */
     private $credentials;
+
+    /**
+     * @var array
+     */
     private $paths;
 
     public function __construct(){}
@@ -19,6 +33,7 @@ class ContainerService
         if($inst === null)
         {
             $inst = new ContainerService();
+            $inst->container = new PimpleContainer();
         }
         return $inst;
     }
@@ -29,29 +44,29 @@ class ContainerService
      */
     public function getContainer()
     {
-        $container = new PimpleContainer();
+            $this->container['db.credentials'] = $this->getDbCredentials()->toArray();
 
-        $container['db.credentials'] = $this->getDbCredentials()->toArray();
+            $this->container['entity.paths'] = $this->getEntityPaths();
 
-        $container['entity.paths'] = $this->getEntityPaths();
+            // The Doctrine Entity Manager
+            $this->container['doctrine.entity_manager'] = $this->container->factory(function ($c) {
 
-        // The Doctrine Entity Manager
-        $container['doctrine.entity_manager'] = $container->factory(function ($c) {
+                $isDevMode = false;
 
-            $isDevMode = false;
+                $paths = !empty($c['entity.paths']) ? $c['entity.paths'] : ['src/Entity'];
 
-            $paths = isset($c['entity.paths']) ? $c['entity.paths'] : ['src/Entity'];
+                $dbParams = $c['db.credentials'];
 
-            $dbParams = $c['db.credentials'];
+                $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+                $entityManager = EntityManager::create($dbParams, $config);
 
-            $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
-            $entityManager = EntityManager::create($dbParams, $config);
-
-            return $entityManager;
-        });
-
-        return $container;
+                return $entityManager;
+            });
+        return $this->container;
     }
+
+
+
     /**
      * @param string $path
      * @return $this
@@ -89,5 +104,11 @@ class ContainerService
     {
         $this->credentials = $credentials;
         return $this;
+    }
+
+
+    public function registerToContainer(RegistrationInterface $config)
+    {
+        $config->addToContainer($this->container);
     }
 }

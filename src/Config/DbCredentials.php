@@ -1,10 +1,12 @@
 <?php
 
 
-namespace Del\Common;
+namespace Del\Common\Config;
 
+use Del\Common\Container\RegistrationInterface;
+use Pimple\Container;
 
-class DbCredentials
+class DbCredentials implements RegistrationInterface
 {
     /** @var  array */
     private $credentials;
@@ -97,4 +99,16 @@ class DbCredentials
     {
         return $this->credentials;
     }
+
+    /**
+     * @param Container $c
+     * @return Container
+     */
+    public function addToContainer(Container $c)
+    {
+        $c['db.credentials'] = $this->toArray();
+        return $c;
+    }
+
+
 }
