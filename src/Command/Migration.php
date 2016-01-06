@@ -17,7 +17,7 @@ class Migration extends MigrateCommand
 
         $this
             ->setName('migrate')
-            ->setDescription('Execute migrations in a vendor package')
+            ->setDescription('Execute migrations.')
             ->addArgument('vendor', InputArgument::OPTIONAL, 'The vendor directory containing the migrations.')
             ->addArgument('version', InputArgument::OPTIONAL, 'The version number (YYYYMMDDHHMMSS) or alias (first, prev, next, latest) to migrate to.', 'latest')
             ->addOption('write-sql', null, InputOption::VALUE_NONE, 'The path to output the migration SQL file instead of executing it.')
