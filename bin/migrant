@@ -1,7 +1,9 @@
 #!/usr/bin/env php
 <?php
 
-require_once('vendor/autoload.php');
+$path = file_exists('vendor/autoload.php') ? 'vendor/autoload.php' : '../../../autoload.php';
+
+require_once();
 
 use Del\Common\Command\Migration;
 use Del\Common\ContainerService;
