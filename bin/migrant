@@ -3,7 +3,7 @@
 
 $path = file_exists('vendor/autoload.php') ? 'vendor/autoload.php' : '../../../autoload.php';
 
-require_once();
+require_once($path);
 
 use Del\Common\Command\Migration;
 use Del\Common\ContainerService;
