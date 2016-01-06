@@ -32,14 +32,11 @@ class ContainerTest extends \Codeception\TestCase\Test
 
     public function testCanGetAndSetCredentials()
     {
-        $this->containerSvc->setDbCredentials([
-            'driver' => 'pdo_mysql',
-            'dbname' => 'testdb',
-            'user' => 'testuser',
-            'password' => '[123456]',
-        ]);
 
         $creds = $this->containerSvc->getDbCredentials();
+        $creds->setUser('testuser');
+        $this->containerSvc->setDbCredentials($creds);
+        $creds = $this->containerSvc->getDbCredentials()->toArray();
         $this->assertTrue(is_array($creds));
         $this->assertEquals('testuser', $creds['user']);
     }
@@ -50,5 +47,16 @@ class ContainerTest extends \Codeception\TestCase\Test
         $em = $this->containerSvc->getContainer()['doctrine.entity_manager'];
         $this->assertInstanceOf('Doctrine\ORM\EntityManager',$em);
     }
+
+
+    public function testCanGetAndSetPaths()
+    {
+        $this->containerSvc->addEntityPath('vendor/random/src/Entity');
+        $this->containerSvc->addEntityPath('vendor/delboy1978uk/src/Entity');
+        $paths = $this->containerSvc->getEntityPaths();
+        $this->assertContains('vendor/random/src/Entity',$paths);
+        $this->assertContains('vendor/delboy1978uk/src/Entity',$paths);
+    }
+
 
 }

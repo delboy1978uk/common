@@ -1,6 +1,5 @@
 <?php
 
-use Del\Common\Command\Migration;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
@@ -17,6 +16,7 @@ use Del\Common\DbCredentials;
 $credentials = new DbCredentials();
 $container = ContainerService::getInstance()
                     ->setDbCredentials($credentials->toArray())
+                    ->addEntityPath('src/Entity')
                     ->getContainer();
 
 
@@ -28,14 +28,13 @@ $helperSet = ConsoleRunner::createHelperSet($em);
 $helperSet->set(new \Symfony\Component\Console\Helper\DialogHelper(),'dialog');
 
 /** Migrations setup */
-$path = realpath(getcwd().'/migrations');
-
 
 $configuration = new Configuration($em->getConnection());
 $configuration->setMigrationsDirectory('migrations');
 $configuration->setMigrationsNamespace('migrations');
+$configuration->setMigrationsTableName('Migration');
 
-$delmigrate = new Migration();
+//$delmigrate = new Migration();
 $diff = new DiffCommand();
 $exec = new ExecuteCommand();
 $gen = new GenerateCommand();
@@ -44,13 +43,16 @@ $status = new StatusCommand();
 $ver = new VersionCommand();
 
 $diff->setMigrationConfiguration($configuration);
+$exec->setMigrationConfiguration($configuration);
 $gen->setMigrationConfiguration($configuration);
 $migrate->setMigrationConfiguration($configuration);
 $status->setMigrationConfiguration($configuration);
+$ver->setMigrationConfiguration($configuration);
+
 
 
 $cli = ConsoleRunner::createApplication($helperSet,[
-    $diff, $exec, $gen, $delmigrate, $migrate, $status, $ver
+    $diff, $exec, $gen, $migrate, $status, $ver
 ]);
 
 return $cli->run();

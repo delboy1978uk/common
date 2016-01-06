@@ -1,7 +1,6 @@
 <?php
 namespace Del\Common;
 
-use InvalidArgumentException;
 use Pimple\Container as PimpleContainer;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
@@ -32,7 +31,7 @@ class ContainerService
     {
         $container = new PimpleContainer();
 
-        $container['db.credentials'] = $this->getDbCredentials();
+        $container['db.credentials'] = $this->getDbCredentials()->toArray();
 
         $container['entity.paths'] = $this->getEntityPaths();
 
@@ -41,15 +40,9 @@ class ContainerService
 
             $isDevMode = false;
 
-            $paths = $c['entity.paths'];
-            if(!isset($paths)) {
-                throw new InvalidArgumentException('You must set the entity.paths array with at least one path before calling getContainer()');
-            }
+            $paths = isset($c['entity.paths']) ? $c['entity.paths'] : ['src/Entity'];
 
             $dbParams = $c['db.credentials'];
-            if(!isset($dbParams)) {
-                throw new InvalidArgumentException('You must set the db.credentials array in the container before calling getContainer()');
-            }
 
             $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
             $entityManager = EntityManager::create($dbParams, $config);
@@ -59,18 +52,6 @@ class ContainerService
 
         return $container;
     }
-
-    /**
-     * @param $path
-     * @return PimpleContainer
-     */
-    public function addDefinition($key, $value)
-    {
-        $c = $this->getContainer();
-        $c[$key] = $value;
-        return $c;
-    }
-
     /**
      * @param string $path
      * @return $this
@@ -93,26 +74,18 @@ class ContainerService
     }
 
     /**
-     * @return array
+     * @return DbCredentials
      */
     public function getDbCredentials()
     {
-        if(isset($this->credentials['driver']) && isset($this->credentials['dbname']) && isset($this->credentials['user']) && isset($this->credentials['password']) ){
-            return $this->credentials;
-        }
-        return [
-            'driver' => 'pdo_mysql',
-            'dbname' => 'delboy1978uk',
-            'user' => 'dbuser',
-            'password' => '[123456]',
-        ];
+        return $this->credentials ? $this->credentials : new DbCredentials();
     }
 
     /**
-     * @param array $credentials
+     * @param DbCredentials $credentials
      * @return $this
      */
-    public function setDbCredentials(array $credentials)
+    public function setDbCredentials(DbCredentials $credentials)
     {
         $this->credentials = $credentials;
         return $this;

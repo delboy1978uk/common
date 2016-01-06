@@ -12,12 +12,10 @@ class DbCredentials
     public function __construct(array $array = null)
     {
         $this->credentials = [];
-        if($array != null){
-            $this->credentials['driver'] = $array['driver'] ?: 'pdo_mysql';
-            $this->credentials['dbname'] = $array['dbname'] ?: 'delboy1978uk';
-            $this->credentials['user'] = $array['user'] ?: 'dbuser';
-            $this->credentials['password'] = $array['password'] ?: '[123456]';
-        }
+        $this->credentials['driver'] = $array['driver'] ?: 'pdo_mysql';
+        $this->credentials['dbname'] = $array['dbname'] ?: 'delboy1978uk';
+        $this->credentials['user'] = $array['user'] ?: 'dbuser';
+        $this->credentials['password'] = $array['password'] ?: '[123456]';
     }
 
     /**
