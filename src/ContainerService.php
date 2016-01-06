@@ -8,8 +8,8 @@ use Doctrine\ORM\EntityManager;
 
 class ContainerService
 {
-    private $credentials = [];
-    private $paths = [];
+    private $credentials;
+    private $paths;
 
     public function __construct(){}
     public function __clone(){}
@@ -73,10 +73,13 @@ class ContainerService
 
     /**
      * @param string $path
-     * @return PimpleContainer
+     * @return $this
      */
     public function addEntityPath($path)
     {
+        if(!isset($this->paths)) {
+            $this->paths = [];
+        }
         $this->paths[] = $path;
         return $this;
     }

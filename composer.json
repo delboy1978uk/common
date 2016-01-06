@@ -21,5 +21,8 @@
         "psr-4":{
             "Del\\Common\\":"src/"
         }
+    },
+    "bin": {
+        "bin/migrant"
     }
 }

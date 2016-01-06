@@ -6,19 +6,64 @@ require_once('vendor/autoload.php');
 use Del\Common\Command\Migration;
 use Del\Common\ContainerService;
 use Del\Common\DbCredentials;
+use Doctrine\DBAL\Migrations\Configuration\Configuration;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\AbstractCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
+use Doctrine\DBAL\Migrations\Finder\GlobFinder;
+use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Helper\DialogHelper;
 
 
 $credentials = new DbCredentials();
 $container = ContainerService::getInstance()
     ->setDbCredentials($credentials->toArray())
+    ->addEntityPath('src/Entity')
     ->getContainer();
 
 
 // Fetch the entity Manager
 $em = $container['doctrine.entity_manager'];
 
+$helperSet = ConsoleRunner::createHelperSet($em);
+$helperSet->set(new DialogHelper(),'dialog');
+
+
+$configuration = new Configuration($em->getConnection());
+$configuration->setMigrationsDirectory('migrations');
+$configuration->setMigrationsNamespace('Migrations');
+$configuration->setMigrationsTableName('Migration');
+$configuration->registerMigrationsFromDirectory('migrations');
+
+$diff = new DiffCommand();
+$exec = new ExecuteCommand();
+$gen = new GenerateCommand();
+$vendormigrate = new Migration();
+//$migrate = new MigrateCommand();
+$status = new StatusCommand();
+$ver = new VersionCommand();
+
+$diff->setMigrationConfiguration($configuration);
+$exec->setMigrationConfiguration($configuration);
+$gen->setMigrationConfiguration($configuration);
+//$migrate->setMigrationConfiguration($configuration);
+$vendormigrate->setMigrationConfiguration($configuration);
+$status->setMigrationConfiguration($configuration);
+$ver->setMigrationConfiguration($configuration);
+
+$commands = [$diff, $exec, $gen,  $vendormigrate, $status, $ver];
+
+/** @var AbstractCommand $command */
+foreach($commands as $command) {
+    $command->setName(str_replace('migrations:', '', $command->getName()));
+}
+
 $app = new Application();
-$mig = new Migration();
-$app->add($mig);
+$app->setHelperSet($helperSet);
+$app->addCommands($commands);
 $app->run();
