@@ -4,7 +4,7 @@ namespace Del\Common\Command;
 
 use Del\Common\Command\Migration;
 use Del\Common\ContainerService;
-use Del\Common\DbCredentials;
+use Del\Common\Config\DbCredentials;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;

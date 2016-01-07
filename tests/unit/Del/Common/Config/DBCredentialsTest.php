@@ -1,6 +1,6 @@
 <?php
 
-namespace Del\Common;
+namespace Del\Common\Config;
 
 class DBCredentialsTest extends \Codeception\TestCase\Test
 {
