@@ -36,7 +36,7 @@ use My\Repository\Dog as DogRepository;
 use Doctrine\ORM\EntityManager;
 use Pimple\Container;
 
-class Person implements RegistrationInterface
+class DogPackage implements RegistrationInterface
 {
     /**
      * @param Container $c
