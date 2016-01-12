@@ -61,7 +61,7 @@ class DbCredentials implements RegistrationInterface
      */
     public function getDatabase()
     {
-        return $this->credentials['database'];
+        return $this->credentials['dbname'];
     }
 
     /**
@@ -70,7 +70,7 @@ class DbCredentials implements RegistrationInterface
      */
     public function setDatabase($database)
     {
-        $this->credentials['database'] = $database;
+        $this->credentials['dbname'] = $database;
         return $this;
     }
 

@@ -27,7 +27,7 @@ if(file_exists('migrant-cfg.php')) {
     $depend = require_once('migrant-cfg.php');
     $db = $depend['db'];
     $credentials->setDriver($db['driver'])
-                ->setDatabase($db['database'])
+                ->setDatabase($db['dbname'])
                 ->setUser($db['user'])
                 ->setPassword($db['password']);
     foreach($depend['packages'] as $package) {
