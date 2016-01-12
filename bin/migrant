@@ -22,6 +22,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\DialogHelper;
 
 $credentials = new DbCredentials();
+$containerSvc = ContainerService::getInstance();
 
 if(file_exists('migrant-cfg.php')) {
     $depend = require_once('migrant-cfg.php');
@@ -35,7 +36,6 @@ if(file_exists('migrant-cfg.php')) {
     }
 }
 
-$containerSvc = ContainerService::getInstance();
 $containerSvc->setDbCredentials($credentials);
 $container = $containerSvc->getContainer();
 
