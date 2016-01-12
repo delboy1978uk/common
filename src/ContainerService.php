@@ -34,6 +34,7 @@ class ContainerService
         {
             $inst = new ContainerService();
             $inst->container = new PimpleContainer();
+            $inst->paths = ['src/Entity'];
         }
         return $inst;
     }
@@ -73,9 +74,6 @@ class ContainerService
      */
     public function addEntityPath($path)
     {
-        if(!isset($this->paths)) {
-            $this->paths = ['src/Entity'];
-        }
         $this->paths[] = $path;
         return $this;
     }
