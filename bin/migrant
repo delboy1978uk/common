@@ -21,12 +21,23 @@ use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\DialogHelper;
 
-
 $credentials = new DbCredentials();
-$container = ContainerService::getInstance()
-    ->setDbCredentials($credentials->toArray())
-    ->addEntityPath('src/Entity')
-    ->getContainer();
+
+if(file_exists('migrant-cfg.php')) {
+    $depend = require_once('migrant-cfg.php');
+    $db = $depend['db'];
+    $credentials->setDriver($db['driver'])
+                ->setDatabase($db['database'])
+                ->setUser($db['user'])
+                ->setPassword($db['password']);
+    foreach($depend['packages'] as $package) {
+        $containerSvc->addEntityPath('vendor'.DIRECTORY_SEPARATOR.$package.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Entity');
+    }
+}
+
+$containerSvc = ContainerService::getInstance();
+$containerSvc->setDbCredentials($credentials);
+$container = $containerSvc->getContainer();
 
 
 // Fetch the entity Manager
@@ -46,14 +57,12 @@ $diff = new DiffCommand();
 $exec = new ExecuteCommand();
 $gen = new GenerateCommand();
 $vendormigrate = new Migration();
-//$migrate = new MigrateCommand();
 $status = new StatusCommand();
 $ver = new VersionCommand();
 
 $diff->setMigrationConfiguration($configuration);
 $exec->setMigrationConfiguration($configuration);
 $gen->setMigrationConfiguration($configuration);
-//$migrate->setMigrationConfiguration($configuration);
 $vendormigrate->setMigrationConfiguration($configuration);
 $status->setMigrationConfiguration($configuration);
 $ver->setMigrationConfiguration($configuration);

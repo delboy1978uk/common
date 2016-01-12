@@ -1,0 +1,13 @@
+<?php
+
+return [
+    'db' => [
+        'driver' => 'pdo_mysql',
+        'dbname' => '',
+        'user' => '',
+        'password' => '',
+    ],
+    'packages' => [
+        'delboy1978uk/person', // adds entity path vendor/delboy1978uk/person/src/Entity
+    ],
+];

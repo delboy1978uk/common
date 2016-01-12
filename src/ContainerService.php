@@ -53,7 +53,7 @@ class ContainerService
 
                 $isDevMode = false;
 
-                $paths = !empty($c['entity.paths']) ? $c['entity.paths'] : ['src/Entity'];
+                $paths = $c['entity.paths'];
 
                 $dbParams = $c['db.credentials'];
 
@@ -74,7 +74,7 @@ class ContainerService
     public function addEntityPath($path)
     {
         if(!isset($this->paths)) {
-            $this->paths = [];
+            $this->paths = ['src/Entity'];
         }
         $this->paths[] = $path;
         return $this;
