@@ -15,4 +15,14 @@ interface RegistrationInterface
      * @param Container $c
      */
     public function addToContainer(Container $c);
+
+    /**
+     * @return string
+     */
+    function getEntityPath();
+
+    /**
+     * @return mixed
+     */
+    function hasEntityPath();
 }

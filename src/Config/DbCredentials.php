@@ -110,5 +110,21 @@ class DbCredentials implements RegistrationInterface
         return $c;
     }
 
+    /**
+     * @return null
+     */
+    function getEntityPath()
+    {
+        return null;
+    }
+
+    /**
+     * @return bool
+     */
+    function hasEntityPath()
+    {
+        return false;
+    }
+
 
 }

@@ -107,6 +107,9 @@ class ContainerService
 
     public function registerToContainer(RegistrationInterface $config)
     {
+        if($config->hasEntityPath()) {
+            $this->addEntityPath($config->getEntityPath());
+        }
         $config->addToContainer($this->container);
     }
 }
