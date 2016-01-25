@@ -2,13 +2,15 @@
 
 namespace Del\Common\View\Helper;
 
+use Del\Icon;
+
 class AlertBox
 {
     /**
      * @param array $message array of messages, last item in array should be alert class
      * @return bool|string
      */
-    public function alertBox(array $message)
+    public function alertBox(array $message, $icon = true)
     {
         if(!$message){return false;}
         if(count($message) < 2) {
@@ -25,6 +27,21 @@ class AlertBox
 
         $num = count($message);
         $x = 1;
+
+        if($icon) {
+            if(is_string($icon)) {
+                $alert .= $icon;
+            } elseif (is_bool($icon)) {
+                $defaults = [
+                    'info' => Icon::INFO_CIRCLE,
+                    'warning' => Icon::WARNING,
+                    'danger' => Icon::WARNING,
+                    'success' => Icon::CHECK_CIRCLE,
+                ];
+                $alert .= $defaults[$class];
+            }
+        }
+
         foreach($message as $msg)
         {
             $alert .= $msg;

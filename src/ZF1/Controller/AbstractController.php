@@ -7,13 +7,6 @@ use Zend_Controller_Action;
 
 class AbstractController extends Zend_Controller_Action
 {
-    /** @var  \Pimple\Container $container */
-    private $container;
-
-    public function init()
-    {
-        $this->container = ContainerService::getInstance()->getContainer();
-    }
 
     /**
      * @param $key
@@ -21,6 +14,6 @@ class AbstractController extends Zend_Controller_Action
      */
     public function getContainerObject($key)
     {
-        return $this->container[$key];
+        return ContainerService::getInstance()->getContainer()[$key];
     }
 }
