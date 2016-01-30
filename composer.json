@@ -10,7 +10,7 @@
     ],
     "require": {
       "doctrine/orm": "2.5.1",
-      "doctrine/migrations": "1.1.0",
+      "doctrine/migrations": "1.*",
       "pimple/pimple": "3.0.2",
       "symfony/console": "*"
     },
