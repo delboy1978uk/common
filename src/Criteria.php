@@ -8,6 +8,7 @@ class Criteria
     protected $limit;
     protected $offset;
     protected $order;
+    protected $orderDirection;
 
     /**
      * @return bool
@@ -73,9 +74,9 @@ class Criteria
      * @param $code
      * @return $this
      */
-    public function setOrder($code)
+    public function setOrder($order)
     {
-        $this->order = $code;
+        $this->order = $order;
         return $this;
     }
 
@@ -86,4 +87,32 @@ class Criteria
     {
         return $this->order;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getOrderDirection()
+    {
+        return $this->orderDirection;
+    }
+
+    /**
+     * @param mixed $orderDirection
+     * @return Criteria
+     */
+    public function setOrderDirection($orderDirection)
+    {
+        $this->orderDirection = $orderDirection;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasOrderDirection()
+    {
+        return $this->orderDirection !== null;
+    }
+
+
 }
