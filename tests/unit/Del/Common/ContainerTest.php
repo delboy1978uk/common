@@ -2,6 +2,8 @@
 
 namespace Del\Common;
 
+use DelTesting\TestPackage;
+
 class ContainerTest extends \Codeception\TestCase\Test
 {
    /**
@@ -56,6 +58,16 @@ class ContainerTest extends \Codeception\TestCase\Test
         $paths = $this->containerSvc->getEntityPaths();
         $this->assertContains('vendor/random/src/Entity',$paths);
         $this->assertContains('vendor/delboy1978uk/src/Entity',$paths);
+    }
+
+
+    public function testRegisterToContainer()
+    {
+        $config = new TestPackage();
+        $this->containerSvc->registerToContainer($config);
+        $paths = $this->containerSvc->getEntityPaths();
+        $this->assertContains('vendor/random/src/Entity',$paths);
+        $this->assertEquals('A boring old string.',$this->containerSvc->getContainer()['test.package']);
     }
 
 

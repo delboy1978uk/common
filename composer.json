@@ -19,7 +19,8 @@
     },
     "autoload":{
         "psr-4":{
-            "Del\\Common\\":"src/"
+            "Del\\Common\\":"src/",
+            "DelTesting\\": "tests/unit/Del/"
         }
     },
     "bin": [ "bin/migrant"]

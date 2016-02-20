@@ -114,5 +114,14 @@ class Criteria
         return $this->orderDirection !== null;
     }
 
-
+    /**
+     * @param $page
+     * @param $limit
+     */
+    public function setPagination($page, $limit)
+    {
+        $offset = ($limit * $page) - $limit;
+        $this->setLimit($limit);
+        $this->setOffset($offset);
+    }
 }

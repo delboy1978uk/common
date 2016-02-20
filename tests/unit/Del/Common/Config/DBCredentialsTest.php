@@ -2,6 +2,8 @@
 
 namespace Del\Common\Config;
 
+use Del\Common\ContainerService;
+
 class DBCredentialsTest extends \Codeception\TestCase\Test
 {
    /**
@@ -56,6 +58,27 @@ class DBCredentialsTest extends \Codeception\TestCase\Test
     {
         $this->creds->setPassword('123');
         $this->assertEquals('123', $this->creds->getPassword());
+    }
+
+    public function testHasEntityPath()
+    {
+        $this->assertFalse($this->creds->hasEntityPath());
+    }
+
+    public function testGetEntityPath()
+    {
+        $this->assertNull($this->creds->getEntityPath());
+    }
+
+    public function testAddToContainer()
+    {
+        ContainerService::getInstance()->registerToContainer($this->creds);
+        $creds = ContainerService::getInstance()->getContainer()['db.credentials'];
+        $this->assertTrue(is_array($creds));
+        $this->assertArrayHasKey('driver',$creds);
+        $this->assertArrayHasKey('dbname',$creds);
+        $this->assertArrayHasKey('user',$creds);
+        $this->assertArrayHasKey('password',$creds);
     }
 
 
