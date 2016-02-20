@@ -113,7 +113,7 @@ class DbCredentials implements RegistrationInterface
     /**
      * @return null
      */
-    function getEntityPath()
+    public function getEntityPath()
     {
         return null;
     }
@@ -121,7 +121,7 @@ class DbCredentials implements RegistrationInterface
     /**
      * @return bool
      */
-    function hasEntityPath()
+    public function hasEntityPath()
     {
         return false;
     }
