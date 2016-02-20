@@ -10,7 +10,6 @@ class AlertBox
      */
     public function alertBox(array $message)
     {
-        if(!$message){return false;}
         if(count($message) < 2) {
             $class = 'info';
         } else {
