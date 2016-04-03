@@ -10,6 +10,12 @@ use Zend_Layout;
 
 class AbstractController extends Zend_Controller_Action
 {
+    protected $container;
+
+    public function init()
+    {
+        $this->container = ContainerService::getInstance()->getContainer();
+    }
 
     /**
      * @param $key
@@ -17,7 +23,7 @@ class AbstractController extends Zend_Controller_Action
      */
     public function getContainerObject($key)
     {
-        return ContainerService::getInstance()->getContainer()[$key];
+        return $this->container[$key];
     }
 
     /**
