@@ -13,11 +13,11 @@ use Doctrine\DBAL\Migrations\Tools\Console\Command\AbstractCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\DBAL\Migrations\Finder\GlobFinder;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
+use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\DialogHelper;
 
@@ -59,6 +59,7 @@ $gen = new GenerateCommand();
 $vendormigrate = new Migration();
 $status = new StatusCommand();
 $ver = new VersionCommand();
+$proxy = new GenerateProxiesCommand();
 
 $diff->setMigrationConfiguration($configuration);
 $exec->setMigrationConfiguration($configuration);
@@ -67,11 +68,14 @@ $vendormigrate->setMigrationConfiguration($configuration);
 $status->setMigrationConfiguration($configuration);
 $ver->setMigrationConfiguration($configuration);
 
-$commands = [$diff, $exec, $gen,  $vendormigrate, $status, $ver];
+$commands = [$diff, $exec, $gen,  $vendormigrate, $status, $ver, $proxy];
 
 /** @var AbstractCommand $command */
 foreach($commands as $command) {
-    $command->setName(str_replace('migrations:', '', $command->getName()));
+    $name = $command->getName();
+    $name = str_replace('migrations:', '', $name);
+    $name = str_replace('orm:', '', $name);
+    $command->setName($name);
 }
 
 $app = new Application();
