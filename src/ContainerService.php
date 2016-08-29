@@ -45,24 +45,23 @@ class ContainerService
      */
     public function getContainer()
     {
-            $this->container['db.credentials'] = $this->getDbCredentials()->toArray();
+        if (!isset($this->dbInitialised)) {
 
+            $this->container['db.credentials'] = $this->getDbCredentials()->toArray();
             $this->container['entity.paths'] = $this->getEntityPaths();
 
+            $paths = $this->container['entity.paths'];
+            $dbParams = $this->container['db.credentials'];
+            $isDevMode = false;
+
+            $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+            $entityManager = EntityManager::create($dbParams, $config);
+
             // The Doctrine Entity Manager
-            $this->container['doctrine.entity_manager'] = $this->container->factory(function ($c) {
+            $this->container['doctrine.entity_manager'] = $entityManager;
+            $this->container['dbInitialised'] = true;
 
-                $isDevMode = false;
-
-                $paths = $c['entity.paths'];
-
-                $dbParams = $c['db.credentials'];
-
-                $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
-                $entityManager = EntityManager::create($dbParams, $config);
-
-                return $entityManager;
-            });
+        }
         return $this->container;
     }
 
