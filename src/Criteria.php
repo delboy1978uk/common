@@ -3,8 +3,11 @@
 namespace Del\Common;
 
 
-class Criteria
+abstract class Criteria
 {
+    const ORDER_ASC = 'ASC';
+    const ORDER_DESC = 'DESC';
+
     protected $limit;
     protected $offset;
     protected $order;
