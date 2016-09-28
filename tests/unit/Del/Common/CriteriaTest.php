@@ -1,6 +1,10 @@
 <?php
 
-namespace Del\Common;
+namespace DelTesting\Common;
+
+use Del\Common\Criteria;
+
+class ConcreteCriteria extends Criteria{}
 
 class CriteriaTest extends \Codeception\TestCase\Test
 {
@@ -16,7 +20,7 @@ class CriteriaTest extends \Codeception\TestCase\Test
 
     protected function _before()
     {
-        $this->criteria = new Criteria();
+        $this->criteria = new ConcreteCriteria();
     }
 
     protected function _after()
