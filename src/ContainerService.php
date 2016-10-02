@@ -24,6 +24,12 @@ class ContainerService
      */
     private $paths;
 
+    /** @var string $proxyPath */
+    private $proxyPath;
+
+    /** @var \Doctrine\ORM\Configuration $config */
+    private $config;
+
     public function __construct(){}
     public function __clone(){}
 
@@ -54,8 +60,9 @@ class ContainerService
             $dbParams = $this->container['db.credentials'];
             $isDevMode = false;
 
-            $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
-            $entityManager = EntityManager::create($dbParams, $config);
+            $this->config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+            $this->addProxyPath();
+            $entityManager = EntityManager::create($dbParams, $this->config);
 
             // The Doctrine Entity Manager
             $this->container['doctrine.entity_manager'] = $entityManager;
@@ -63,6 +70,13 @@ class ContainerService
 
         }
         return $this->container;
+    }
+
+    private function addProxyPath()
+    {
+        if(isset($this->proxyPath)) {
+            $this->config->setProxyDir($this->proxyPath);
+        }
     }
 
 
@@ -84,6 +98,18 @@ class ContainerService
     {
         return $this->paths;
     }
+
+    /**
+     * @param string $proxyPath
+     * @return ContainerService
+     */
+    public function setProxyPath($proxyPath)
+    {
+        $this->proxyPath = $proxyPath;
+        return $this;
+    }
+
+
 
     /**
      * @return DbCredentials
