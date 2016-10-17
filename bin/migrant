@@ -8,6 +8,7 @@ require_once($path);
 use Del\Common\Command\Migration;
 use Del\Common\ContainerService;
 use Del\Common\Config\DbCredentials;
+use Del\Common\Util\MigrantUtil;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\AbstractCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
@@ -15,7 +16,6 @@ use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
-use Doctrine\DBAL\Migrations\Finder\GlobFinder;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Symfony\Component\Console\Application;
@@ -31,7 +31,11 @@ if(file_exists('migrant-cfg.php')) {
                 ->setDatabase($db['dbname'])
                 ->setUser($db['user'])
                 ->setPassword($db['password']);
-    foreach($depend['packages'] as $package) {
+
+    // Merge all the package dependencies
+    $migrantUtil = new MigrantUtil();
+    $packages = $migrantUtil->processDependencies($depend['packages']);
+    foreach ($packages as $package) {
         $containerSvc->addEntityPath('vendor'.DIRECTORY_SEPARATOR.$package.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Entity');
     }
 }
