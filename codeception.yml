@@ -17,5 +17,8 @@ modules:
             dump: tests/_data/dump.sql
 coverage:
     enabled: true
-    include:
-        - src/*
+    whitelist:
+        include:
+            - src/*
+        exclude:
+            - src/ZF1/*

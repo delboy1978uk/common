@@ -6,8 +6,4 @@ use Doctrine\ORM\EntityRepository;
 
 class AbstractRepository extends EntityRepository
 {
-    public function getPaginatorPageCount()
-    {
-//        $this->
-    }
 }
