@@ -69,9 +69,5 @@ EOT
             $path = 'vendor/'.$path.'/migrations';
             $config = $this->getMigrationConfiguration($input, $output);
             $config->setMigrationsDirectory($path);
-            $config->registerMigrationsFromDirectory($path);
-            $this->setMigrationConfiguration($config);
-        }
-        parent::execute($input, $output);
-    }
+            $config->registerMigrationsFromDirectory($path);$this->setMigrationConfiguration($config);} parent::execute($input, $output);}
 }

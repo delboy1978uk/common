@@ -3,6 +3,7 @@
 namespace Del\Common;
 
 use DelTesting\TestPackage;
+use ReflectionClass;
 
 class ContainerTest extends \Codeception\TestCase\Test
 {
@@ -70,5 +71,18 @@ class ContainerTest extends \Codeception\TestCase\Test
         $this->assertEquals('A boring old string.',$this->containerSvc->getContainer()['test.package']);
     }
 
+    public function testSetProxyPaths()
+    {
+        $this->containerSvc->setProxyPath('/path/to/proxies');
+        // Initialise container
+        $this->containerSvc->getContainer();
+        $reflection = new ReflectionClass('Del\Common\ContainerService');
+        $property = $reflection->getProperty('proxyPath');
+        $property->setAccessible(true);
+        $proxyPath = $property->getValue($this->containerSvc);
+        $this->assertTrue(is_string($proxyPath));
+        $this->assertEquals('/path/to/proxies', $proxyPath);
+
+    }
 
 }
