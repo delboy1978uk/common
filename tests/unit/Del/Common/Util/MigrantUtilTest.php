@@ -25,6 +25,7 @@ class MigrantUtilTest extends \Codeception\TestCase\Test
         $newDir = realpath(
             $this->originalWorkingDir.DIRECTORY_SEPARATOR.'tests'.DIRECTORY_SEPARATOR.'_data'.DIRECTORY_SEPARATOR.'migrantUtil'
         );
+        die(var_dump($this->originalWorkingDir, $newDir));
         $this->util = new MigrantUtil();
         chdir($newDir);
     }
