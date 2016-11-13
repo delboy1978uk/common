@@ -60,3 +60,18 @@ $container = $containerSvc->getContainer();
 $em = $container['doctrine.entity_manager'];
 $dogRepo = $container['repository.dog'];
 ```
+##Value Objects
+There have several value objects which extend Del\Common\Value\AbstractValue.
+```php
+use Del\Common\Value\DecimalValue;
+use Del\Common\Value\IntValue;
+use Del\Common\Value\StringValue;
+
+$money = new DecimalValue(123.45);
+$text = new StringValue('Hooray');
+$int = new IntValue(500);
+
+echo $money->getValue();
+echo $text->getValue();
+echo $int->getValue();
+```
