@@ -5,7 +5,7 @@
  * Time: 12:48
  */
 
-namespace Del\Collection;
+namespace Del\Common\Collection;
 
 use ArrayIterator;
 

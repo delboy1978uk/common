@@ -5,7 +5,7 @@
  * Time: 12:18
  */
 
-namespace Del\Collection;
+namespace Del\Common\Collection;
 
 
 interface CollectionInterface
