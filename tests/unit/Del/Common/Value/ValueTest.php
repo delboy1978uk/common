@@ -13,20 +13,22 @@ class AlertBoxTest extends Test
     {
         $value = new StringValue('Hello');
         $this->assertTrue(is_string($value->getValue()));
-        $this->assertEquals('Hello',$value->getValue());
+        $this->assertEquals('Hello', $value->getValue());
         $value = new StringValue(12345);
         $this->assertTrue(is_string($value->getValue()));
         $this->assertEquals('12345',$value->getValue());
+        $this->setExpectedException('InvalidArgumentException');
+        new StringValue(new DecimalValue(3.11));
     }
 
     public function testIntValue()
     {
         $value = new IntValue(123456);
         $this->assertTrue(is_int($value->getValue()));
-        $this->assertEquals(123456,$value->getValue());
+        $this->assertEquals(123456, $value->getValue());
         $value = new IntValue('123456');
         $this->assertTrue(is_int($value->getValue()));
-        $this->assertEquals(123456,$value->getValue());
+        $this->assertEquals(123456, $value->getValue());
         $this->setExpectedException('InvalidArgumentException');
         new IntValue('Not numeric');
     }
@@ -35,13 +37,13 @@ class AlertBoxTest extends Test
     {
         $value = new DecimalValue(1234);
         $this->assertTrue(is_float($value->getValue()));
-        $this->assertEquals(1234.00,$value->getValue());
+        $this->assertEquals(1234.00, $value->getValue());
         $value = new DecimalValue(1234.56389);
         $this->assertTrue(is_float($value->getValue()));
-        $this->assertEquals(1234.56,$value->getValue());
+        $this->assertEquals(1234.56, $value->getValue());
         $value = new DecimalValue('1234.56');
         $this->assertTrue(is_float($value->getValue()));
-        $this->assertEquals(1234.56,$value->getValue());
+        $this->assertEquals(1234.56, $value->getValue());
         $this->setExpectedException('InvalidArgumentException');
         new DecimalValue('Not numeric');
     }

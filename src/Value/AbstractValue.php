@@ -7,8 +7,7 @@
 
 namespace Del\Common\Value;
 
-
-abstract class AbstractValue
+abstract class AbstractValue implements ValueInterface
 {
     /** @var mixed $value */
     protected $value;
@@ -20,4 +19,6 @@ abstract class AbstractValue
     {
         return $this->value;
     }
+
+    abstract public function __construct($value);
 }
