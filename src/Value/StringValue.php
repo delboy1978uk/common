@@ -43,7 +43,6 @@ class StringValue extends AbstractValue
             case is_null($value):
             case is_scalar($value):
                 return true;
-                break;
             default:
                 return false;
         }
