@@ -18,6 +18,7 @@ class DbCredentials implements RegistrationInterface
         $this->credentials['dbname'] = $array['dbname'] ?: 'delboy1978uk';
         $this->credentials['user'] = $array['user'] ?: 'dbuser';
         $this->credentials['password'] = $array['password'] ?: '[123456]';
+        $this->credentials['host'] = $array['host'] ?: '127.0.0.1';
     }
 
     /**
@@ -77,6 +78,24 @@ class DbCredentials implements RegistrationInterface
     /**
      * @return string
      */
+    public function getHost()
+    {
+        return $this->credentials['host'];
+    }
+
+    /**
+     * @param string $database
+     * @return DbCredentials
+     */
+    public function setHost($host)
+    {
+        $this->credentials['host'] = $host;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getDriver()
     {
         return $this->credentials['driver'];
@@ -125,6 +144,4 @@ class DbCredentials implements RegistrationInterface
     {
         return false;
     }
-
-
 }
