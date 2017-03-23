@@ -1,6 +1,6 @@
 <?php
 
-namespace DelTesting;
+namespace DelTesting\Console;
 
 use Codeception\TestCase\Test;
 use Symfony\Component\Console\Application;
