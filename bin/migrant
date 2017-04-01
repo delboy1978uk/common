@@ -30,7 +30,7 @@ if(file_exists('migrant-cfg.php')) {
     $credentials->setDriver($db['driver'])
                 ->setDatabase($db['dbname'])
                 ->setUser($db['user'])
-                ->setHost('host')
+                ->setHost($db['host'])
                 ->setPassword($db['password']);
 
     // Merge all the package dependencies
