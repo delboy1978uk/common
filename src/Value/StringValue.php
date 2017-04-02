@@ -11,6 +11,9 @@ use InvalidArgumentException;
 
 class StringValue extends AbstractValue
 {
+    /** @var bool $stringable */
+    private $stringable;
+
     /**
      * StringValue constructor.
      *
@@ -38,9 +41,47 @@ class StringValue extends AbstractValue
      */
     private function canBeString($value)
     {
-        if ((is_object($value) && method_exists($value, '__toString')) || is_null($value) || is_scalar($value)) {
-            return true;
+        $this->stringable = false;
+        $this->isStringableObject($value);
+        $this->isNullValue($value);
+        $this->isScalarValue($value);
+        return $this->stringable;
+    }
+
+    /**
+     * @param $value
+     */
+    private function isStringableObject($value)
+    {
+        $bool = is_object($value) && method_exists($value, '__toString');
+        $this->updateStringable($bool);
+    }
+
+    /**
+     * @param $value
+     */
+    private function isNullValue($value)
+    {
+        $bool = is_null($value);
+        $this->updateStringable($bool);
+    }
+
+    /**
+     * @param $value
+     */
+    private function isScalarValue($value)
+    {
+        $bool = is_scalar($value);
+        $this->updateStringable($bool);
+    }
+
+    /**
+     * @param $bool
+     */
+    private function updateStringable($bool)
+    {
+        if ($this->stringable === false) {
+            $this->stringable = $bool;
         }
-        return false;
     }
 }
