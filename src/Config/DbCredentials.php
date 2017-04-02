@@ -14,10 +14,10 @@ class DbCredentials implements RegistrationInterface
     public function __construct(array $array = null)
     {
         $this->credentials = [];
-        $this->credentials['driver'] = $array['driver'] ?: 'pdo_mysql';
-        $this->credentials['dbname'] = $array['dbname'] ?: 'delboy1978uk';
-        $this->credentials['user'] = $array['user'] ?: 'dbuser';
-        $this->credentials['password'] = $array['password'] ?: '[123456]';
+        $this->credentials['driver'] = $array['driver'];
+        $this->credentials['dbname'] = $array['dbname'];
+        $this->credentials['user'] = $array['user'];
+        $this->credentials['password'] = $array['password'];
         $this->credentials['host'] = $array['host'] ?: '127.0.0.1';
     }
 

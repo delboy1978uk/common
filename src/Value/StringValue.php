@@ -38,13 +38,9 @@ class StringValue extends AbstractValue
      */
     private function canBeString($value)
     {
-        switch(true) {
-            case is_object($value) && method_exists($value, '__toString'):
-            case is_null($value):
-            case is_scalar($value):
-                return true;
-            default:
-                return false;
+        if ((is_object($value) && method_exists($value, '__toString')) || is_null($value) || is_scalar($value)) {
+            return true;
         }
+        return false;
     }
 }
