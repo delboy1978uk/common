@@ -27,6 +27,10 @@ class GenerateProxyTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $credentials = new DbCredentials();
+        $credentials->setDriver('pdo_mysql')
+            ->setDatabase('delboy1978uk')
+            ->setUser('dbuser')
+            ->setPassword('[123456]');
         $container = ContainerService::getInstance()
             ->setDbCredentials($credentials)
             ->addEntityPath('src/Entity')
