@@ -44,4 +44,12 @@ class AbstractController extends Zend_Controller_Action
         }
         throw new Exception('No Identity.');
     }
+
+    /**
+     * @return Zend_Controller_Request_Http
+     */
+    public function getRequest()
+    {
+        return parent::getRequest();
+    }
 }
