@@ -24,8 +24,11 @@ use Symfony\Component\Console\Helper\DialogHelper;
 $credentials = new DbCredentials();
 $containerSvc = ContainerService::getInstance();
 
-if(file_exists('migrant-cfg.php')) {
+if (file_exists('migrant-cfg.php')) {
     $depend = require_once('migrant-cfg.php');
+    if (file_exists('migrant-cfg.local.php')) {
+        $depend = array_merge($depend, require_once 'migrant-cfg.local.php');
+    }
     $db = $depend['db'];
     $credentials->setDriver($db['driver'])
                 ->setDatabase($db['dbname'])
