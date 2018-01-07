@@ -10,7 +10,7 @@ class DbCredentials implements RegistrationInterface
 {
     /** @var  array */
     private $credentials = [
-        'driver' => 'mysql',
+        'driver' => 'pdo_mysql',
         'host' => '127.0.0.1',
         'dbname' => '',
         'user' => 'userhere',
