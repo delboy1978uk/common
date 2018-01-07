@@ -13,8 +13,8 @@ class DbCredentials implements RegistrationInterface
         'driver' => 'pdo_mysql',
         'host' => '127.0.0.1',
         'dbname' => '',
-        'user' => 'userhere',
-        'password' => 'passwordhere',
+        'user' => '',
+        'password' => '',
     ];
     
     public function __construct(array $array = [])
