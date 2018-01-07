@@ -9,16 +9,17 @@ use Pimple\Container;
 class DbCredentials implements RegistrationInterface
 {
     /** @var  array */
-    private $credentials;
+    private $credentials = [
+        'driver' => 'mysql',
+        'host' => '127.0.0.1',
+        'dbname' => '',
+        'user' => 'userhere',
+        'password' => 'passwordhere',
+    ];
     
-    public function __construct(array $array = null)
+    public function __construct(array $array = [])
     {
-        $this->credentials = [];
-        $this->credentials['driver'] = $array['driver'];
-        $this->credentials['dbname'] = $array['dbname'];
-        $this->credentials['user'] = $array['user'];
-        $this->credentials['password'] = $array['password'];
-        $this->credentials['host'] = $array['host'] ?: '127.0.0.1';
+        $this->credentials = array_merge($this->credentials, $array);
     }
 
     /**
