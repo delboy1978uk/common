@@ -60,7 +60,7 @@ class ContainerService
             $dbParams = $this->container['db.credentials'];
             $isDevMode = false;
 
-            $this->config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode);
+            $this->config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, null, null, false);
             $this->addProxyPath();
             $entityManager = EntityManager::create($dbParams, $this->config);
 
