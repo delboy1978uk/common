@@ -20,7 +20,7 @@ class TestPackage implements RegistrationInterface
      */
     function getEntityPath()
     {
-        return 'test/entity/path';
+        return 'tests/unit';
     }
 
     /**

@@ -54,11 +54,11 @@ class ContainerTest extends \Codeception\TestCase\Test
 
     public function testCanGetAndSetPaths()
     {
-        $this->containerSvc->addEntityPath('vendor/random/src/Entity');
-        $this->containerSvc->addEntityPath('vendor/delboy1978uk/src/Entity');
+        $this->containerSvc->addEntityPath('vendor/bin');
+        $this->containerSvc->addEntityPath('tests/unit');
         $paths = $this->containerSvc->getEntityPaths();
-        $this->assertContains('vendor/random/src/Entity',$paths);
-        $this->assertContains('vendor/delboy1978uk/src/Entity',$paths);
+        $this->assertContains('vendor/bin',$paths);
+        $this->assertContains('tests/unit',$paths);
     }
 
 
@@ -67,7 +67,7 @@ class ContainerTest extends \Codeception\TestCase\Test
         $config = new TestPackage();
         $this->containerSvc->registerToContainer($config);
         $paths = $this->containerSvc->getEntityPaths();
-        $this->assertContains('vendor/random/src/Entity',$paths);
+        $this->assertContains('tests/unit',$paths);
         $this->assertEquals('A boring old string.',$this->containerSvc->getContainer()['test.package']);
     }
 
