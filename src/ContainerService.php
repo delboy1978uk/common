@@ -87,7 +87,10 @@ class ContainerService
      */
     public function addEntityPath($path)
     {
-        $this->paths[] = $path;
+        if (is_dir($path)) {
+            $this->paths[] = $path;
+        }
+
         return $this;
     }
 
