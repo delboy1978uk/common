@@ -24,66 +24,89 @@ use Symfony\Component\Console\Helper\DialogHelper;
 $credentials = new DbCredentials();
 $containerSvc = ContainerService::getInstance();
 
-if(file_exists('migrant-cfg.php')) {
-    $depend = require_once('migrant-cfg.php');
-    $db = $depend['db'];
+
+$config = [];
+
+if (file_exists('config/db.php')) {
+    $config = require_once 'config/db.php';
+}
+
+if (file_exists('config/packages.php')) {
+    $config = array_merge($config, require_once 'config/packages.php');
+}
+
+if (file_exists('migrant-cfg.php')) {
+    $config = require_once 'migrant-cfg.php';
+}
+
+if (file_exists('migrant-cfg.local.php')) {
+    $config = array_merge($config, require_once 'migrant-cfg.local.php');
+}
+
+if (empty($config)) {
+    echo "No config found.\n";
+    echo 'Please add a "db" and "packages" config, in either config/db.php, config/packages.php, or migrant-cfg.php';
+} else {
+
+    $db = $config['db'];
     $credentials->setDriver($db['driver'])
-                ->setDatabase($db['dbname'])
-                ->setUser($db['user'])
-                ->setHost($db['host'])
-                ->setPassword($db['password']);
+        ->setDatabase($db['dbname'])
+        ->setUser($db['user'])
+        ->setHost($db['host'])
+        ->setPassword($db['password']);
 
     // Merge all the package dependencies
     $migrantUtil = new MigrantUtil();
-    $packages = $migrantUtil->processDependencies($depend['packages']);
+    $packages = $migrantUtil->processDependencies($config['packages']);
     foreach ($packages as $package) {
-        $containerSvc->addEntityPath('vendor'.DIRECTORY_SEPARATOR.$package.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Entity');
+        $containerSvc->addEntityPath('vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Entity');
     }
+
+
+    $containerSvc->setDbCredentials($credentials);
+    $container = $containerSvc->getContainer();
+
+
+    // Fetch the entity Manager
+    $em = $container['doctrine.entity_manager'];
+
+    $helperSet = ConsoleRunner::createHelperSet($em);
+    $helperSet->set(new DialogHelper(), 'dialog');
+
+
+    $configuration = new Configuration($em->getConnection());
+    $configuration->setMigrationsDirectory('migrations');
+    $configuration->setMigrationsNamespace('Migrations');
+    $configuration->setMigrationsTableName('Migration');
+    $configuration->registerMigrationsFromDirectory('migrations');
+
+    $diff = new DiffCommand();
+    $exec = new ExecuteCommand();
+    $gen = new GenerateCommand();
+    $vendormigrate = new Migration();
+    $status = new StatusCommand();
+    $ver = new VersionCommand();
+    $proxy = new GenerateProxiesCommand();
+
+    $diff->setMigrationConfiguration($configuration);
+    $exec->setMigrationConfiguration($configuration);
+    $gen->setMigrationConfiguration($configuration);
+    $vendormigrate->setMigrationConfiguration($configuration);
+    $status->setMigrationConfiguration($configuration);
+    $ver->setMigrationConfiguration($configuration);
+
+    $commands = [$diff, $exec, $gen, $vendormigrate, $status, $ver, $proxy];
+
+    /** @var AbstractCommand $command */
+    foreach ($commands as $command) {
+        $name = $command->getName();
+        $name = str_replace('migrations:', '', $name);
+        $name = str_replace('orm:', '', $name);
+        $command->setName($name);
+    }
+
+    $app = new Application();
+    $app->setHelperSet($helperSet);
+    $app->addCommands($commands);
+    $app->run();
 }
-
-$containerSvc->setDbCredentials($credentials);
-$container = $containerSvc->getContainer();
-
-
-// Fetch the entity Manager
-$em = $container['doctrine.entity_manager'];
-
-$helperSet = ConsoleRunner::createHelperSet($em);
-$helperSet->set(new DialogHelper(),'dialog');
-
-
-$configuration = new Configuration($em->getConnection());
-$configuration->setMigrationsDirectory('migrations');
-$configuration->setMigrationsNamespace('Migrations');
-$configuration->setMigrationsTableName('Migration');
-$configuration->registerMigrationsFromDirectory('migrations');
-
-$diff = new DiffCommand();
-$exec = new ExecuteCommand();
-$gen = new GenerateCommand();
-$vendormigrate = new Migration();
-$status = new StatusCommand();
-$ver = new VersionCommand();
-$proxy = new GenerateProxiesCommand();
-
-$diff->setMigrationConfiguration($configuration);
-$exec->setMigrationConfiguration($configuration);
-$gen->setMigrationConfiguration($configuration);
-$vendormigrate->setMigrationConfiguration($configuration);
-$status->setMigrationConfiguration($configuration);
-$ver->setMigrationConfiguration($configuration);
-
-$commands = [$diff, $exec, $gen,  $vendormigrate, $status, $ver, $proxy];
-
-/** @var AbstractCommand $command */
-foreach($commands as $command) {
-    $name = $command->getName();
-    $name = str_replace('migrations:', '', $name);
-    $name = str_replace('orm:', '', $name);
-    $command->setName($name);
-}
-
-$app = new Application();
-$app->setHelperSet($helperSet);
-$app->addCommands($commands);
-$app->run();
