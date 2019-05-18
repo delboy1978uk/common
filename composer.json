@@ -23,5 +23,10 @@
             "DelTesting\\": "tests/unit/Del/"
         }
     },
-    "bin": [ "bin/migrant"]
+    "bin": [ "bin/migrant"],
+    "scripts": {
+        "post-package-install": [
+            "php -r \"if (!file_exists('migrations')) { mkdir('migrations'); }\""
+        ]
+    }
 }
