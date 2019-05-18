@@ -9,10 +9,17 @@
         }
     ],
     "require": {
+<<<<<<< HEAD
       "doctrine/orm": "^2.5.1",
       "doctrine/migrations": "^1.1.0",
       "pimple/pimple": "^3.0.2",
       "symfony/console": "^2.8.1"
+=======
+      "doctrine/orm": "2.5.1",
+      "doctrine/migrations": "1.1.0",
+      "pimple/pimple": "3.0.2",
+      "symfony/console": ">=2.7 <5.0"
+>>>>>>> dev-master
     },
     "require-dev":{
         "codeception/codeception":"^2.1.3"
