@@ -25,8 +25,11 @@
     },
     "bin": [ "bin/migrant"],
     "scripts": {
-        "post-autoload-dump": [
-            "mkdir migrations"
-        ]
+        "post-install-cmd": [
+            "php -r \"if (!file_exists('migrations')) { mkdir('migrations'); }\""
+        ],
+        "post-update-cmd": [
+            "php -r \"if (!file_exists('migrations')) { mkdir('migrations'); }\""
+        ]        
     }
 }
