@@ -7,6 +7,7 @@ use Del\Common\ContainerService;
 use Del\Common\Config\DbCredentials;
 use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Tester\CommandTester;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
@@ -39,7 +40,7 @@ class MigrationTest extends \Codeception\TestCase\Test
         $em = $container['doctrine.entity_manager'];
 
         $helperSet = ConsoleRunner::createHelperSet($em);
-        $helperSet->set(new DialogHelper(),'dialog');
+        $helperSet->set(new QuestionHelper(),'dialog');
 
         $configuration = new Configuration($em->getConnection());
         $configuration->setMigrationsNamespace('Migrations');
