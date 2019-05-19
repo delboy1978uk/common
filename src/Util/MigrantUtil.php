@@ -37,6 +37,10 @@ class MigrantUtil
         return $this;
     }
 
+    /**
+     * @param array $packages
+     * @return array
+     */
     public function processDependencies(array $packages)
     {
         foreach($packages as $package) {
@@ -45,6 +49,9 @@ class MigrantUtil
         return $this->getMergedPackages();
     }
 
+    /**
+     * @param $package
+     */
     private function processPackage($package)
     {
         $mergedPackages = $this->getMergedPackages();
@@ -58,6 +65,10 @@ class MigrantUtil
         }
     }
 
+    /**
+     * @param $package
+     * @return array
+     */
     private function getDependencies($package)
     {
         $srcFolder = 'vendor'.DIRECTORY_SEPARATOR.$package.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR;
@@ -65,6 +76,6 @@ class MigrantUtil
             $depend = require($srcFolder.'../migrant-cfg.php');
             return isset($depend['packages']) ? $depend['packages'] : [];
         }
-        return null;
+        return [];
     }
 }
