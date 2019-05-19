@@ -1,4 +1,6 @@
 # Composer files
+.idea
+composer.lock
 composer.phar
 /vendor/
 
