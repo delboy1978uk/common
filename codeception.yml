@@ -20,5 +20,3 @@ coverage:
     whitelist:
         include:
             - src/*
-        exclude:
-            - src/ZF1/*
