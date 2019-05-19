@@ -20,6 +20,7 @@ use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\DialogHelper;
+use Symfony\Component\Console\Helper\QuestionHelper;
 
 $credentials = new DbCredentials();
 $containerSvc = ContainerService::getInstance();
@@ -70,7 +71,7 @@ if (empty($config)) {
     $em = $container['doctrine.entity_manager'];
 
     $helperSet = ConsoleRunner::createHelperSet($em);
-    $helperSet->set(new DialogHelper(), 'dialog');
+    $helperSet->set(new QuestionHelper(), 'dialog');
 
 
     $configuration = new Configuration($em->getConnection());
