@@ -54,12 +54,14 @@ if (empty($config)) {
 } else {
 
     $db = $config['db'];
+    $database = $db['database'] ?: $db['dbname'];
+    $password = $db['pass'] ?: $db['password'];
 
     $credentials->setDriver($db['driver'])
-        ->setDatabase($db['dbname'])
+        ->setDatabase($database)
         ->setUser($db['user'])
         ->setHost($db['host'])
-        ->setPassword($db['password']);
+        ->setPassword($password);
 
     // Merge all the package dependencies
     $migrantUtil = new MigrantUtil();
@@ -67,8 +69,7 @@ if (empty($config)) {
     foreach ($packages as $package) {
         $containerSvc->addEntityPath('vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Entity');
     }
-
-
+    
     $containerSvc->setDbCredentials($credentials);
     $container = $containerSvc->getContainer();
 
