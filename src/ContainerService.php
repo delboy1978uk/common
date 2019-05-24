@@ -40,9 +40,43 @@ class ContainerService
         {
             $inst = new ContainerService();
             $inst->container = new PimpleContainer();
-            $inst->paths = ['src/Entity'];
+
+            $inst->paths = $inst->initEntityPaths();
         }
         return $inst;
+    }
+
+    /**
+     *  by default looks for src/Entity
+     *  or src/anything/Entity
+     *
+     * @return array
+     */
+    private function initEntityPaths(): array
+    {
+        $paths = [];
+        $paths = $this->addPathIfExists($paths, 'src');
+        $possibleModules = glob('src/*');
+
+        foreach ($possibleModules as $path) {
+            $paths = $this->addPathIfExists($paths, $path);
+        }
+
+        return $paths;
+    }
+
+    /**
+     * @param array $paths
+     * @param string $path
+     * @return array
+     */
+    private function addPathIfExists(array $paths, string $path): array
+    {
+        if (is_dir($path . '/Entity')) {
+            $paths[] = $path . '/Entity';
+        }
+
+        return $paths;
     }
 
 
