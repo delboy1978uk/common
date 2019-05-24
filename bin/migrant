@@ -27,7 +27,7 @@ $containerSvc = ContainerService::getInstance();
 $config = [];
 $configFile = 'config/db.php';
 
-if (defined('APPLICATION_ENV')) {
+if (getenv('APPLICATION_ENV')) {
     $env = getenv('APPLICATION_ENV');
     if (file_exists('config/' . $env . '/db.php')) {
         $configFile = 'config/' . $env . '/db.php';
