@@ -73,12 +73,13 @@ if (empty($config)) {
     $helperSet = ConsoleRunner::createHelperSet($em);
     $helperSet->set(new QuestionHelper(), 'dialog');
 
-
+    $migrationsDir = is_dir('data/migrations') ? 'data/migrations' : 'migrations';
+    
     $configuration = new Configuration($em->getConnection());
-    $configuration->setMigrationsDirectory('migrations');
+    $configuration->setMigrationsDirectory($migrationsDir);
     $configuration->setMigrationsNamespace('Migrations');
     $configuration->setMigrationsTableName('Migration');
-    $configuration->registerMigrationsFromDirectory('migrations');
+    $configuration->registerMigrationsFromDirectory($migrationsDir);
 
     $diff = new DiffCommand();
     $exec = new ExecuteCommand();
