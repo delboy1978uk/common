@@ -34,9 +34,7 @@ if (getenv('APPLICATION_ENV')) {
     }
 }
 
-if (file_exists('config/db.php')) {
-    $config = require_once $configFile;
-}
+$config = require_once $configFile;
 
 if (file_exists('config/packages.php')) {
     $config = array_merge($config, require_once 'config/packages.php');
