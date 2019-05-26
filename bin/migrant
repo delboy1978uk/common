@@ -65,7 +65,8 @@ if (empty($config)) {
 
     // Merge all the package dependencies
     $migrantUtil = new MigrantUtil();
-    $packages = $migrantUtil->processDependencies($config['packages']);
+    $requiredPackages = $config['packages'] ?: [];
+    $packages = $migrantUtil->processDependencies($requiredPackages);
     foreach ($packages as $package) {
         $containerSvc->addEntityPath('vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Entity');
     }
