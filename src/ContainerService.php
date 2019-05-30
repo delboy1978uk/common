@@ -33,6 +33,9 @@ class ContainerService
     public function __construct(){}
     public function __clone(){}
 
+    /**
+     * @return ContainerService
+     */
     public static function getInstance()
     {
         static $inst = null;
@@ -47,7 +50,7 @@ class ContainerService
 
 
     /**
-     * @return PimpleContainer
+     * @return Container
      */
     public function getContainer()
     {
@@ -78,8 +81,7 @@ class ContainerService
             $this->config->setProxyDir($this->proxyPath);
         }
     }
-
-
+    
 
     /**
      * @param string $path
@@ -110,7 +112,6 @@ class ContainerService
     }
 
 
-
     /**
      * @return DbCredentials
      */
@@ -129,7 +130,9 @@ class ContainerService
         return $this;
     }
 
-
+    /**
+     * @param RegistrationInterface $config
+     */
     public function registerToContainer(RegistrationInterface $config)
     {
         if($config->hasEntityPath()) {

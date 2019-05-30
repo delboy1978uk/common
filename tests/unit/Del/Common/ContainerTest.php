@@ -2,10 +2,12 @@
 
 namespace Del\Common;
 
+use Barnacle\Container;
+use Codeception\TestCase\Test;
 use DelTesting\TestPackage;
 use ReflectionClass;
 
-class ContainerTest extends \Codeception\TestCase\Test
+class ContainerTest extends Test
 {
    /**
     * @var \UnitTester
@@ -30,7 +32,7 @@ class ContainerTest extends \Codeception\TestCase\Test
 
     public function testCanGetContainer()
     {
-        $this->assertInstanceOf('Pimple\Container',$this->containerSvc->getContainer());
+        $this->assertInstanceOf(Container::class, $this->containerSvc->getContainer());
     }
 
     public function testCanGetAndSetCredentials()
