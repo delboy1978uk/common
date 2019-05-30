@@ -11,7 +11,7 @@
     "require": {
       "doctrine/orm": "^2.6.3",
       "doctrine/migrations": "1.8.1",
-      "pimple/pimple": "3.2.3",
+      "delboy1978uk/pimple": "^1.1",
       "symfony/console": ">=2.7 <5.0"
     },
     "require-dev":{

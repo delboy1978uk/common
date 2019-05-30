@@ -81,7 +81,7 @@ class ContainerService
             $this->config->setProxyDir($this->proxyPath);
         }
     }
-    
+
 
     /**
      * @param string $path
