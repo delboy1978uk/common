@@ -1,7 +1,7 @@
 <?php
 namespace Del\Common;
 
-use Pimple\Container as PimpleContainer;
+use Barnacle\Container;
 use Del\Common\Container\RegistrationInterface;
 use Del\Common\Config\DbCredentials;
 use Doctrine\ORM\Tools\Setup;
@@ -39,7 +39,7 @@ class ContainerService
         if($inst === null)
         {
             $inst = new ContainerService();
-            $inst->container = new PimpleContainer();
+            $inst->container = new Container();
             $inst->paths = ['src/Entity'];
         }
         return $inst;
