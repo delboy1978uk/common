@@ -3,7 +3,7 @@
 namespace DelTesting;
 
 use Del\Common\Container\RegistrationInterface;
-use Pimple\Container;
+use Barnacle\Container;
 
 class TestPackage implements RegistrationInterface
 {
