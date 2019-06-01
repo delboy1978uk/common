@@ -71,7 +71,7 @@ class DBCredentialsTest extends \Codeception\TestCase\Test
 
     public function testGetEntityPath()
     {
-        $this->assertNull($this->creds->getEntityPath());
+        $this->assertEmpty($this->creds->getEntityPath());
     }
 
     public function testAddToContainer()

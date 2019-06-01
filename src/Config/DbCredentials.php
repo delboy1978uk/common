@@ -124,11 +124,11 @@ class DbCredentials implements RegistrationInterface
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getEntityPath(): string
     {
-        return null;
+        return '';
     }
 
     /**
