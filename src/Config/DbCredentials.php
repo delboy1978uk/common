@@ -4,7 +4,7 @@
 namespace Del\Common\Config;
 
 use Del\Common\Container\RegistrationInterface;
-use Pimple\Container;
+use Barnacle\Container;
 
 class DbCredentials implements RegistrationInterface
 {
