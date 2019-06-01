@@ -19,10 +19,10 @@ class DBCredentialsTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->creds = new DbCredentials();
-        $this->creds->setDriver('pdo_mysql')
-            ->setDatabase('delboy1978uk')
-            ->setUser('dbuser')
-            ->setPassword('[123456]');
+        $this->creds->setDriver('pdo_mysql');
+        $this->creds->setDatabase('delboy1978uk');
+        $this->creds->setUser('dbuser');
+        $this->creds->setPassword('[123456]');
     }
 
     protected function _after()
