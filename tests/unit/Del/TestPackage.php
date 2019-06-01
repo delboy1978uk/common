@@ -18,7 +18,7 @@ class TestPackage implements RegistrationInterface
     /**
      * @return string
      */
-    function getEntityPath()
+    function getEntityPath(): string
     {
         return 'test/entity/path';
     }
@@ -26,7 +26,7 @@ class TestPackage implements RegistrationInterface
     /**
      * @return mixed
      */
-    function hasEntityPath()
+    function hasEntityPath(): bool
     {
         return true;
     }
