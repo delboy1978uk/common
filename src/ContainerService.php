@@ -2,7 +2,7 @@
 namespace Del\Common;
 
 use Barnacle\Container;
-use Del\Common\Container\RegistrationInterface;
+use Barnacle\RegistrationInterface;
 use Del\Common\Config\DbCredentials;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
