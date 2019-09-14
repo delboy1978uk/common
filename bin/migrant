@@ -19,7 +19,6 @@ use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 
 $credentials = new DbCredentials();
@@ -57,11 +56,11 @@ if (empty($config)) {
     $database = $db['database'] ?: $db['dbname'];
     $password = $db['pass'] ?: $db['password'];
 
-    $credentials->setDriver($db['driver'])
-        ->setDatabase($database)
-        ->setUser($db['user'])
-        ->setHost($db['host'])
-        ->setPassword($password);
+    $credentials->setDriver($db['driver']);
+    $credentials->setDatabase($database);
+    $credentials->setUser($db['user']);
+    $credentials->setHost($db['host']);
+    $credentials->setPassword($password);
 
     // Merge all the package dependencies
     $migrantUtil = new MigrantUtil();

@@ -104,6 +104,7 @@ class ContainerService
 
             // The Doctrine Entity Manager
             $this->container['doctrine.entity_manager'] = $entityManager;
+            $this->container[EntityManager::class] = $entityManager;
             $this->container['dbInitialised'] = true;
 
         }
