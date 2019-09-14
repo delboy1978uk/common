@@ -7,7 +7,7 @@
 
 namespace Del\Common\Container;
 
-use Pimple\Container;
+use Barnacle\Container;
 
 interface RegistrationInterface
 {
