@@ -20,16 +20,21 @@ use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\DialogHelper;
+use Symfony\Component\Console\Helper\QuestionHelper;
 
 $credentials = new DbCredentials();
 $containerSvc = ContainerService::getInstance();
-
-
 $config = [];
+$configFile = 'config/db.php';
 
-if (file_exists('config/db.php')) {
-    $config = require_once 'config/db.php';
+if (getenv('APPLICATION_ENV')) {
+    $env = getenv('APPLICATION_ENV');
+    if (file_exists('config/' . $env . '/db.php')) {
+        $configFile = 'config/' . $env . '/db.php';
+    }
 }
+
+$config = require_once $configFile;
 
 if (file_exists('config/packages.php')) {
     $config = array_merge($config, require_once 'config/packages.php');
@@ -49,20 +54,23 @@ if (empty($config)) {
 } else {
 
     $db = $config['db'];
+    $database = $db['database'] ?: $db['dbname'];
+    $password = $db['pass'] ?: $db['password'];
+
     $credentials->setDriver($db['driver'])
-        ->setDatabase($db['dbname'])
+        ->setDatabase($database)
         ->setUser($db['user'])
         ->setHost($db['host'])
-        ->setPassword($db['password']);
+        ->setPassword($password);
 
     // Merge all the package dependencies
     $migrantUtil = new MigrantUtil();
-    $packages = $migrantUtil->processDependencies($config['packages']);
+    $requiredPackages = $config['packages'] ?: [];
+    $packages = $migrantUtil->processDependencies($requiredPackages);
     foreach ($packages as $package) {
         $containerSvc->addEntityPath('vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Entity');
     }
-
-
+    
     $containerSvc->setDbCredentials($credentials);
     $container = $containerSvc->getContainer();
 
@@ -71,14 +79,15 @@ if (empty($config)) {
     $em = $container['doctrine.entity_manager'];
 
     $helperSet = ConsoleRunner::createHelperSet($em);
-    $helperSet->set(new DialogHelper(), 'dialog');
+    $helperSet->set(new QuestionHelper(), 'dialog');
 
+    $migrationsDir = is_dir('data/migrations') ? 'data/migrations' : 'migrations';
 
     $configuration = new Configuration($em->getConnection());
-    $configuration->setMigrationsDirectory('migrations');
+    $configuration->setMigrationsDirectory($migrationsDir);
     $configuration->setMigrationsNamespace('Migrations');
     $configuration->setMigrationsTableName('Migration');
-    $configuration->registerMigrationsFromDirectory('migrations');
+    $configuration->registerMigrationsFromDirectory($migrationsDir);
 
     $diff = new DiffCommand();
     $exec = new ExecuteCommand();

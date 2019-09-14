@@ -71,9 +71,12 @@ class MigrantUtil
      */
     private function getDependencies($package)
     {
-        $srcFolder = 'vendor'.DIRECTORY_SEPARATOR.$package.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR;
-        if(file_exists($srcFolder.'../migrant-cfg.php')) {
-            $depend = require($srcFolder.'../migrant-cfg.php');
+        $srcFolder = 'vendor'.DIRECTORY_SEPARATOR.$package.DIRECTORY_SEPARATOR;
+        if(file_exists($srcFolder.'migrant-cfg.php')) {
+            $depend = require($srcFolder.'migrant-cfg.php');
+            if (file_exists('migrant-cfg.local.php')) {
+                $depend = array_merge($depend, require_once 'migrant-cfg.local.php');
+            }
             return isset($depend['packages']) ? $depend['packages'] : [];
         }
         return [];

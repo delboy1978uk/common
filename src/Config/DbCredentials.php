@@ -2,26 +2,23 @@
 
 namespace Del\Common\Config;
 
-use Del\Common\Container\RegistrationInterface;
+use Barnacle\RegistrationInterface;
 use Barnacle\Container;
 
 class DbCredentials implements RegistrationInterface
 {
-    /** @var  array $credentials */
-    private $credentials;
-
-    /**
-     * DbCredentials constructor.
-     * @param array|null $array
-     */
-    public function __construct(array $array = null)
+    /** @var  array */
+    private $credentials = [
+        'driver' => 'pdo_mysql',
+        'host' => '127.0.0.1',
+        'dbname' => '',
+        'user' => '',
+        'password' => '',
+    ];
+    
+    public function __construct(array $array = [])
     {
-        $this->credentials = [];
-        $this->credentials['driver'] = $array['driver'];
-        $this->credentials['dbname'] = $array['dbname'];
-        $this->credentials['user'] = $array['user'];
-        $this->credentials['password'] = $array['password'];
-        $this->credentials['host'] = $array['host'] ?: '127.0.0.1';
+        $this->credentials = array_merge($this->credentials, $array);
     }
 
     /**

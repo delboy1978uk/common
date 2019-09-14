@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManager;
 class ContainerService
 {
     /**
-     * @var PimpleContainer
+     * @var Container
      */
     private $container;
 
@@ -30,27 +30,62 @@ class ContainerService
     /** @var \Doctrine\ORM\Configuration $config */
     private $config;
 
-    public function __construct(){}
-    public function __clone(){}
+    private function __construct(){}
+    private function __clone(){}
 
     /**
-     * @return ContainerService
+     * @param Container|null $container
+     * @return ContainerService|null
      */
-    public static function getInstance()
+    public static function getInstance(Container $container = null)
     {
         static $inst = null;
         if($inst === null)
         {
             $inst = new ContainerService();
-            $inst->container = new Container();
-            $inst->paths = ['src/Entity'];
+            $inst->container = $container ?: new Container();
+            $inst->paths = $inst->initEntityPaths();
         }
         return $inst;
+    }
+
+    /**
+     *  by default looks for src/Entity
+     *  or src/anything/Entity
+     *
+     * @return array
+     */
+    private function initEntityPaths(): array
+    {
+        $paths = [];
+        $paths = $this->addPathIfExists($paths, 'src');
+        $possibleModules = glob('src/*');
+
+        foreach ($possibleModules as $path) {
+            $paths = $this->addPathIfExists($paths, $path);
+        }
+
+        return $paths;
+    }
+
+    /**
+     * @param array $paths
+     * @param string $path
+     * @return array
+     */
+    private function addPathIfExists(array $paths, string $path): array
+    {
+        if (is_dir($path . '/Entity')) {
+            $paths[] = $path . '/Entity';
+        }
+
+        return $paths;
     }
 
 
     /**
      * @return Container
+     * @throws \Doctrine\ORM\ORMException
      */
     public function getContainer()
     {
@@ -89,7 +124,10 @@ class ContainerService
      */
     public function addEntityPath($path)
     {
-        $this->paths[] = $path;
+        if (is_dir($path)) {
+            $this->paths[] = $path;
+        }
+
         return $this;
     }
 
