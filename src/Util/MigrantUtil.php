@@ -47,7 +47,7 @@ class MigrantUtil
     public function processDependencies(array $packages): array
     {
         foreach ($packages as $package) {
-            error_log('processing' . $package);
+            error_log('processing ' . $package);
             $this->processPackage($package);
         }
 
@@ -61,7 +61,7 @@ class MigrantUtil
     {
         $mergedPackages = $this->getMergedPackages();
         if (!in_array($package, $mergedPackages)) {
-            error_log('adding ' .$package . 'to merged pacakages');
+            error_log('adding ' .$package . ' to merged pacakages');
             $mergedPackages[] = $package;
             $this->setMergedPackages($mergedPackages);
             $packages = $this->getDependencies($package);
@@ -78,12 +78,14 @@ class MigrantUtil
      */
     private function getDependencies(string $package): array
     {
-        $srcFolder = 'vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR;
+        $srcFolder = getcwd() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR;
         if (file_exists($srcFolder . '.migrant')) {
             error_log('found file ' . $srcFolder . '.migrant');
             $depend = require($srcFolder . '.migrant');
 
             return isset($depend['packages']) ? $depend['packages'] : [];
+        } else {
+            error_log($srcFolder .' not found');
         }
 
         try {
