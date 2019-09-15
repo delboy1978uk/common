@@ -76,7 +76,7 @@ class MigrantUtil
     private function getDependencies(string $package): array
     {
         $srcFolder = 'vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR;
-
+die(var_dump(getcwd(), $srcFolder));
         if (file_exists($srcFolder . '.migrant')) {
             $depend = require($srcFolder . '.migrant');
 
@@ -91,8 +91,10 @@ class MigrantUtil
             if (class_exists($package)) {
                 $mirror = new ReflectionClass($package);
                 $location = $mirror->getFileName();
+
                 if (false !== strpos($location, 'vendor') && preg_match('#(?<packagePath>.+)/src/.+\.php#', $location, $match)) {
                     $path = $match['packagePath'] . DIRECTORY_SEPARATOR . '.migrant';
+
                     if (file_exists($path)) {
                         $depend = require_once $path;
 
