@@ -77,7 +77,6 @@ class MigrantUtil
     {
         $srcFolder = 'vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR;
         if (file_exists($srcFolder . '.migrant')) {
-            die($srcFolder . '.migrant exists');
             $depend = require($srcFolder . '.migrant');
 
             if (file_exists('.migrant_local')) {
