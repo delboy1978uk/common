@@ -2,6 +2,9 @@
 
 namespace Del\Common\Util;
 
+use Exception;
+use ReflectionClass;
+
 /**
  * User: delboy1978uk
  * Date: 15/10/2016
@@ -41,11 +44,12 @@ class MigrantUtil
      * @param array $packages
      * @return array
      */
-    public function processDependencies(array $packages)
+    public function processDependencies(array $packages): array
     {
-        foreach($packages as $package) {
+        foreach ($packages as $package) {
             $this->processPackage($package);
         }
+
         return $this->getMergedPackages();
     }
 
@@ -55,11 +59,11 @@ class MigrantUtil
     private function processPackage($package)
     {
         $mergedPackages = $this->getMergedPackages();
-        if(!in_array($package, $mergedPackages)) {
+        if (!in_array($package, $mergedPackages)) {
             $mergedPackages[] = $package;
             $this->setMergedPackages($mergedPackages);
             $packages = $this->getDependencies($package);
-            if(count($packages) > 0) {
+            if (count($packages) > 0) {
                 $this->processDependencies($packages);
             }
         }
@@ -69,16 +73,37 @@ class MigrantUtil
      * @param $package
      * @return array
      */
-    private function getDependencies($package)
+    private function getDependencies(string $package): array
     {
-        $srcFolder = 'vendor'.DIRECTORY_SEPARATOR.$package.DIRECTORY_SEPARATOR;
-        if(file_exists($srcFolder.'migrant-cfg.php')) {
-            $depend = require($srcFolder.'migrant-cfg.php');
-            if (file_exists('migrant-cfg.local.php')) {
-                $depend = array_merge($depend, require_once 'migrant-cfg.local.php');
+        $srcFolder = 'vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR;
+
+        if (file_exists($srcFolder . '.migrant')) {
+            $depend = require($srcFolder . '.migrant');
+
+            if (file_exists('.migrant_local')) {
+                $depend = array_merge($depend, require_once '.migrant_local');
             }
+
             return isset($depend['packages']) ? $depend['packages'] : [];
         }
+
+        try {
+            if (class_exists($package)) {
+                $mirror = new ReflectionClass($package);
+                $location = $mirror->getFileName();
+                if (false !== strpos($location, 'vendor') && preg_match('#(?<packagePath>.+)/src/.+\.php#', $location, $match)) {
+                    $path = $match['packagePath'] . DIRECTORY_SEPARATOR . '.migrant';
+                    if (file_exists($path)) {
+                        $depend = require_once $path;
+
+                        return isset($depend['packages']) ? $depend['packages'] : [];
+                    }
+                }
+            }
+        } catch (Exception $e) {
+
+        }
+
         return [];
     }
 }
