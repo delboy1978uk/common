@@ -76,8 +76,8 @@ class MigrantUtil
     private function getDependencies(string $package): array
     {
         $srcFolder = 'vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR;
-die(var_dump(getcwd(), $srcFolder));
         if (file_exists($srcFolder . '.migrant')) {
+            die($srcFolder . '.migrant exists');
             $depend = require($srcFolder . '.migrant');
 
             if (file_exists('.migrant_local')) {
