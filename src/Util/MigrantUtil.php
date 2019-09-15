@@ -47,6 +47,7 @@ class MigrantUtil
     public function processDependencies(array $packages): array
     {
         foreach ($packages as $package) {
+            error_log($package);
             $this->processPackage($package);
         }
 
