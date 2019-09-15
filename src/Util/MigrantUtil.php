@@ -61,6 +61,7 @@ class MigrantUtil
         $mergedPackages = $this->getMergedPackages();
         if (!in_array($package, $mergedPackages)) {
             $mergedPackages[] = $package;
+            echo "adding $package\n";
             $this->setMergedPackages($mergedPackages);
             $packages = $this->getDependencies($package);
             if (count($packages) > 0) {
