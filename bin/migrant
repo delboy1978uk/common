@@ -28,8 +28,8 @@ $config = [];
 
 if (file_exists('config/db.php')) {
     $config = require_once 'config/db.php';
-} elseif (file_exists('migrant-cfg.php')) {
-    $config = require_once 'migrant-cfg.php';
+} elseif (file_exists('.migrant')) {
+    $config = require_once '.migrant';
 }
 
 if (getenv('APPLICATION_ENV')) {
@@ -44,13 +44,13 @@ if (file_exists('config/packages.php')) {
     $config = array_merge($config, require_once 'config/packages.php');
 }
 
-if (file_exists('migrant-cfg.local.php')) {
-    $config = array_merge($config, require_once 'migrant-cfg.local.php');
+if (file_exists('.migrant-local')) {
+    $config = array_merge($config, require_once '.migrant-local');
 }
 
 if (empty($config)) {
     echo "No config found.\n";
-    echo 'Please add a "db" and "packages" config, in either config/db.php, config/packages.php, or migrant-cfg.php';
+    echo 'Please add a "db" and "packages" config, in either config/db.php, config/packages.php, or .migrant';
 } else {
 
     $db = $config['db'];
