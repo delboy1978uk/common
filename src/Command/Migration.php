@@ -3,7 +3,7 @@
 namespace Del\Common\Command;
 
 use Del\Common\ContainerService;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
+use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
