@@ -31,6 +31,7 @@ class MigrationTest extends \Codeception\TestCase\Test
         $credentials->setDriver('pdo_mysql');
         $credentials->setDatabase('awesome');
         $credentials->setUser('travis');
+        $credentials->setHost('127.0.0.1');
         $credentials->setPassword('[123456]');
         $container = ContainerService::getInstance()
             ->setDbCredentials($credentials)
