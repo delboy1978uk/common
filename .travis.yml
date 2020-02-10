@@ -5,15 +5,16 @@ php:
   - 7.2
   - 7.3
 
-branches:
-  except:
-    - gh-pages
-
+services:
+  - mysql
 addons:
   hosts:
     - blank
 
 sudo: false
+
+before_install:
+  - mysql -e 'CREATE DATABASE awesome;'
 
 install:
   - composer install

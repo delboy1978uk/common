@@ -2,18 +2,16 @@
 
 namespace Del\Common\Command;
 
-use Del\Common\Command\GenerateProxy;
+use Codeception\TestCase\Test;
 use Del\Common\ContainerService;
 use Del\Common\Config\DbCredentials;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Tester\CommandTester;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
-use Symfony\Component\Console\Helper\DialogHelper;
+use Doctrine\Migrations\Tools\Console\Command\VersionCommand;
 
-class GenerateProxyTest extends \Codeception\TestCase\Test
+class GenerateProxyTest extends Test
 {
    /**
     * @var \UnitTester
@@ -25,6 +23,9 @@ class GenerateProxyTest extends \Codeception\TestCase\Test
      */
     protected $app;
 
+    /**
+     * @throws \Doctrine\ORM\ORMException
+     */
     protected function _before()
     {
         $credentials = new DbCredentials();
@@ -57,7 +58,7 @@ class GenerateProxyTest extends \Codeception\TestCase\Test
 
     public function testGenerateProxies()
     {
-        $this->setExpectedException('Exception');
+        $this->expectException('Exception');
         $command = $this->app->find('generate-proxies');
         $test = new CommandTester($command);
         $test->execute(array('command' => $command->getName()));

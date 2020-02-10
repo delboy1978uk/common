@@ -5,12 +5,13 @@ namespace Del\Common\Command;
 use Del\Common\Command\Migration;
 use Del\Common\ContainerService;
 use Del\Common\Config\DbCredentials;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
+use Doctrine\Migrations\Configuration\Configuration;
+use Doctrine\Migrations\Exception\MigrationsDirectoryRequired;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Tester\CommandTester;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
+use Doctrine\Migrations\Tools\Console\Command\VersionCommand;
 use Symfony\Component\Console\Helper\DialogHelper;
 
 class MigrationTest extends \Codeception\TestCase\Test
@@ -21,22 +22,22 @@ class MigrationTest extends \Codeception\TestCase\Test
     protected $tester;
 
     /**
-     * @var
+     * @var Application
      */
     protected $app;
 
     protected function _before()
     {
         $credentials = new DbCredentials();
-        $credentials = new DbCredentials();
         $credentials->setDriver('pdo_mysql');
-        $credentials->setDatabase('delboy1978uk');
-        $credentials->setUser('dbuser');
-        $credentials->setPassword('[123456]');
+        $credentials->setDatabase('awesome');
+        $credentials->setUser('root');
+        $credentials->setHost('127.0.0.1');
+        $credentials->setPassword('');
         $container = ContainerService::getInstance()
-            ->setDbCredentials($credentials)
-            ->addEntityPath('src/Entity')
-            ->getContainer();
+                ->setDbCredentials($credentials)
+                ->addEntityPath('src/Entity')
+                ->getContainer();
 
         $em = $container['doctrine.entity_manager'];
 
@@ -61,7 +62,7 @@ class MigrationTest extends \Codeception\TestCase\Test
 
     public function testVendorArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException(MigrationsDirectoryRequired::class);
         $command = $this->app->find('migrate');
         $test = new CommandTester($command);
         $test->execute(array('command' => $command->getName(), 'vendor' => 'bin'));

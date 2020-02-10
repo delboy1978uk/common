@@ -17,7 +17,7 @@ class AlertBoxTest extends Test
         $value = new StringValue(12345);
         $this->assertTrue(is_string($value->getValue()));
         $this->assertEquals('12345',$value->getValue());
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         new StringValue(new DecimalValue(3.11));
     }
 
@@ -29,7 +29,7 @@ class AlertBoxTest extends Test
         $value = new IntValue('123456');
         $this->assertTrue(is_int($value->getValue()));
         $this->assertEquals(123456, $value->getValue());
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         new IntValue('Not numeric');
     }
 
@@ -44,7 +44,7 @@ class AlertBoxTest extends Test
         $value = new DecimalValue('1234.56');
         $this->assertTrue(is_float($value->getValue()));
         $this->assertEquals(1234.56, $value->getValue());
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         new DecimalValue('Not numeric');
     }
 }
