@@ -3,7 +3,7 @@
 namespace Del\Common\Command;
 
 use Del\Common\ContainerService;
-use Doctrine\Migrations\Tools\Console\Command\MigrateCommand;
+use Doctrine\DBAL\Migrations\Tools\Console\Command\MigrateCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -62,11 +62,20 @@ EOT
     }
 
 
-    public function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|null
+     */
+    public function execute(InputInterface $input, OutputInterface $output): ?int
     {
         if ($path = $input->getArgument('vendor')) {
-            $path = 'vendor/'.$path.'/migrations';
+            $path = 'vendor/' . $path . '/migrations';
             $config = $this->getMigrationConfiguration($input, $output);
             $config->setMigrationsDirectory($path);
-            $config->registerMigrationsFromDirectory($path);$this->setMigrationConfiguration($config);} parent::execute($input, $output);}
+            $config->registerMigrationsFromDirectory($path);
+            $this->setMigrationConfiguration($config);
+        }
+        parent::execute($input, $output);
+    }
 }
