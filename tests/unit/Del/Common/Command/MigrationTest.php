@@ -5,12 +5,12 @@ namespace Del\Common\Command;
 use Del\Common\Command\Migration;
 use Del\Common\ContainerService;
 use Del\Common\Config\DbCredentials;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
+use Doctrine\Migrations\Configuration\Configuration;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Tester\CommandTester;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
+use Doctrine\Migrations\Tools\Console\Command\VersionCommand;
 use Symfony\Component\Console\Helper\DialogHelper;
 
 class MigrationTest extends \Codeception\TestCase\Test
