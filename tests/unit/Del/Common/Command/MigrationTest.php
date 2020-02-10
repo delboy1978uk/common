@@ -6,6 +6,7 @@ use Del\Common\Command\Migration;
 use Del\Common\ContainerService;
 use Del\Common\Config\DbCredentials;
 use Doctrine\Migrations\Configuration\Configuration;
+use Doctrine\Migrations\Exception\MigrationsDirectoryRequired;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -61,7 +62,7 @@ class MigrationTest extends \Codeception\TestCase\Test
 
     public function testVendorArgument()
     {
-        $this->expectException('InvalidArgumentException');
+        $this->expectException(MigrationsDirectoryRequired::class);
         $command = $this->app->find('migrate');
         $test = new CommandTester($command);
         $test->execute(array('command' => $command->getName(), 'vendor' => 'bin'));
