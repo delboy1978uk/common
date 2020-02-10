@@ -30,13 +30,13 @@ class MigrationTest extends \Codeception\TestCase\Test
         $credentials = new DbCredentials();
         $credentials->setDriver('pdo_mysql');
         $credentials->setDatabase('awesome');
-        $credentials->setUser('travis');
+        $credentials->setUser('root');
         $credentials->setHost('127.0.0.1');
-        $credentials->setPassword('[123456]');
+        $credentials->setPassword('');
         $container = ContainerService::getInstance()
-            ->setDbCredentials($credentials)
-            ->addEntityPath('src/Entity')
-            ->getContainer();
+                ->setDbCredentials($credentials)
+                ->addEntityPath('src/Entity')
+                ->getContainer();
 
         $em = $container['doctrine.entity_manager'];
 
