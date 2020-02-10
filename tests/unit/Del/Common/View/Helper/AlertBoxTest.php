@@ -30,15 +30,15 @@ class AlertBoxTest extends \Codeception\TestCase\Test
     public function testAlertBox()
     {
         $html = $this->helper->alertBox(['This test must pass.','warning']);
-        $this->assertContains('alert-warning',$html);
-        $this->assertContains('This test must pass.',$html);
+        $this->assertStringContainsString('alert-warning',$html);
+        $this->assertStringContainsString('This test must pass.',$html);
     }
 
 
     public function testDefaultAlertBox()
     {
         $html = $this->helper->alertBox(['This test must pass.']);
-        $this->assertContains('alert-info',$html);
+        $this->assertStringContainsString('alert-info',$html);
     }
 
 }

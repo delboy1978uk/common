@@ -21,13 +21,12 @@ class MigrationTest extends \Codeception\TestCase\Test
     protected $tester;
 
     /**
-     * @var
+     * @var Application
      */
     protected $app;
 
     protected function _before()
     {
-        $credentials = new DbCredentials();
         $credentials = new DbCredentials();
         $credentials->setDriver('pdo_mysql');
         $credentials->setDatabase('delboy1978uk');
@@ -61,7 +60,7 @@ class MigrationTest extends \Codeception\TestCase\Test
 
     public function testVendorArgument()
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
         $command = $this->app->find('migrate');
         $test = new CommandTester($command);
         $test->execute(array('command' => $command->getName(), 'vendor' => 'bin'));
