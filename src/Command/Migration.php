@@ -1,4 +1,5 @@
 <?php
+
 namespace Del\Common\Command;
 
 use Del\Common\ContainerService;
@@ -10,9 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 class Migration extends MigrateCommand
 {
-
-
-    protected function configure()
+    protected function configure(): void
     {
 
         $this
