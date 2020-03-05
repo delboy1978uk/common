@@ -26,16 +26,16 @@ $credentials = new DbCredentials();
 $containerSvc = ContainerService::getInstance();
 $config = [];
 
-if (file_exists('config/db.php')) {
-    $config = require_once 'config/db.php';
+if (file_exists('config/bone-db.php')) {
+    $config = require_once 'config/bone-db.php';
 } elseif (file_exists('.migrant')) {
     $config = require_once '.migrant';
 }
 
 if (getenv('APPLICATION_ENV')) {
     $env = getenv('APPLICATION_ENV');
-    if (file_exists('config/' . $env . '/db.php')) {
-        $configFile = 'config/' . $env . '/db.php';
+    if (file_exists('config/' . $env . '/bone-db.php')) {
+        $configFile = 'config/' . $env . '/bone-db.php';
         $config = array_merge($config, require_once $configFile);
     }
 }
@@ -50,7 +50,7 @@ if (file_exists('.migrant-local')) {
 
 if (empty($config)) {
     echo "No config found.\n";
-    echo 'Please add a "db" and "packages" config, in either config/db.php, config/packages.php, or .migrant';
+    echo 'Please add a "db" and "packages" config, in either config/bone-db.php, config/packages.php, or .migrant';
 } else {
 
     $db = $config['db'];
