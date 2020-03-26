@@ -12,11 +12,11 @@
       "delboy1978uk/barnacle": "^2.2",
       "doctrine/orm": "^2.6.3",
       "doctrine/migrations": "2.2",
-      "symfony/console": ">=4.0"
+      "symfony/console": "^5.0"
     },
     "require-dev":{
         "roave/security-advisories": "dev-master",
-        "codeception/codeception": "^4.0",
+        "codeception/codeception": "4.0",
         "codeception/module-asserts": "^1.1"
     },
     "autoload":{
@@ -25,15 +25,5 @@
             "DelTesting\\": "tests/unit/Del/"
         }
     },
-    "bin": [ "bin/migrant"],
-    "scripts": {
-        "post-install-cmd": [
-            "[[ -d data ]] || mkdir data",
-            "[[ -d data/migrations ]] || mkdir data/migrations"
-        ],
-        "post-update-cmd": [
-            "[[ -d data ]] || mkdir data",
-            "[[ -d data/migrations ]] || mkdir data/migrations"
-        ]
-    }
+    "bin": [ "bin/migrant"]
 }
