@@ -5,29 +5,23 @@ php:
   - 7.2
   - 7.3
 
-branches:
-  except:
-    - gh-pages
-
+services:
+  - mysql
 addons:
   hosts:
     - blank
 
 sudo: false
 
+before_install:
+  - mysql -e 'CREATE DATABASE awesome;'
+
 install:
-  - wget http://selenium-release.storage.googleapis.com/2.42/selenium-server-standalone-2.42.2.jar
   - composer install
 
-
-before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-  - sleep 5
-  - java -jar selenium-server-standalone-2.42.2.jar -port 4444 &
-
 script:
-  - php vendor/bin/codecept run unit --coverage-xml --env travis
+  - pwd
+  - php vendor/bin/codecept run unit -v --coverage-xml --env travis
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar

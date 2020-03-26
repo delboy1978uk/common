@@ -1,25 +1,8 @@
 # Composer files
-.idea
-composer.lock
 composer.phar
-/vendor/
+composer.lock
+vendor/
 
-# Local configs
-config/autoload/*.local.php
-
-# Binary gettext files
-*.mo
-
-# Data
-data/logs/
-data/cache/
-data/sessions/
-data/tmp/
-temp/
-
-# Legacy ZF1
-demos/
-extras/documentation
 
 #ide
 .idea/
@@ -27,4 +10,6 @@ extras/documentation
 
 #test output
 tests/_output
-migrant-cfg.local.php
+
+#migrant config
+.migrant_local

@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Del\Common\Config;
 
-use Del\Common\Container\RegistrationInterface;
-use Pimple\Container;
+use Barnacle\RegistrationInterface;
+use Barnacle\Container;
 
 class DbCredentials implements RegistrationInterface
 {
@@ -25,25 +24,23 @@ class DbCredentials implements RegistrationInterface
     /**
      * @return string
      */
-    public function getPassword()
+    public function getPassword(): string
     {
         return $this->credentials['password'];
     }
 
     /**
      * @param string $password
-     * @return DbCredentials
      */
-    public function setPassword($password)
+    public function setPassword(string $password)
     {
         $this->credentials['password'] = $password;
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getUser()
+    public function getUser(): string
     {
         return $this->credentials['user'];
     }
@@ -52,70 +49,63 @@ class DbCredentials implements RegistrationInterface
      * @param string $user
      * @return DbCredentials
      */
-    public function setUser($user)
+    public function setUser(string $user)
     {
         $this->credentials['user'] = $user;
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getDatabase()
+    public function getDatabase(): string
     {
         return $this->credentials['dbname'];
     }
 
     /**
      * @param string $database
-     * @return DbCredentials
      */
-    public function setDatabase($database)
+    public function setDatabase(string $database)
     {
         $this->credentials['dbname'] = $database;
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getHost()
+    public function getHost(): string
     {
         return $this->credentials['host'];
     }
 
     /**
      * @param string $database
-     * @return DbCredentials
      */
-    public function setHost($host)
+    public function setHost(string $host)
     {
         $this->credentials['host'] = $host;
-        return $this;
     }
 
     /**
      * @return string
      */
-    public function getDriver()
+    public function getDriver(): string
     {
         return $this->credentials['driver'];
     }
 
     /**
      * @param string $driver
-     * @return DbCredentials
      */
-    public function setDriver($driver)
+    public function setDriver(string $driver)
     {
         $this->credentials['driver'] = $driver;
-        return $this;
     }
 
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->credentials;
     }
@@ -124,24 +114,24 @@ class DbCredentials implements RegistrationInterface
      * @param Container $c
      * @return Container
      */
-    public function addToContainer(Container $c)
+    public function addToContainer(Container $c): Container
     {
         $c['db.credentials'] = $this->toArray();
         return $c;
     }
 
     /**
-     * @return null
+     * @return string
      */
-    public function getEntityPath()
+    public function getEntityPath(): string
     {
-        return null;
+        return '';
     }
 
     /**
      * @return bool
      */
-    public function hasEntityPath()
+    public function hasEntityPath(): bool
     {
         return false;
     }

@@ -6,9 +6,9 @@ use Del\Common\ContainerService;
 
 class DBCredentialsTest extends \Codeception\TestCase\Test
 {
-   /**
-    * @var \UnitTester
-    */
+    /**
+     * @var \UnitTester
+     */
     protected $tester;
 
     /**
@@ -19,11 +19,11 @@ class DBCredentialsTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->creds = new DbCredentials();
-        $this->creds->setDriver('pdo_mysql')
-            ->setHost('mars')
-            ->setDatabase('delboy1978uk')
-            ->setUser('dbuser')
-            ->setPassword('[123456]');
+        $this->creds->setDriver('pdo_mysql');
+        $this->creds->setHost('mariadb');
+        $this->creds->setDatabase('awesome');
+        $this->creds->setUser('dbuser');
+        $this->creds->setPassword('[123456]');
     }
 
     protected function _after()
@@ -35,11 +35,11 @@ class DBCredentialsTest extends \Codeception\TestCase\Test
     public function testCanGetDefaults()
     {
         $defaults = $this->creds->toArray();
-        $this->assertContains('pdo_mysql',$defaults['driver']);
-        $this->assertContains('delboy1978uk',$defaults['dbname']);
-        $this->assertContains('dbuser',$defaults['user']);
-        $this->assertContains('[123456]',$defaults['password']);
-        $this->assertContains('mars',$defaults['host']);
+        $this->assertStringContainsString('pdo_mysql', $defaults['driver']);
+        $this->assertStringContainsString('awesome', $defaults['dbname']);
+        $this->assertStringContainsString('dbuser', $defaults['user']);
+        $this->assertStringContainsString('[123456]', $defaults['password']);
+        $this->assertStringContainsString('mariadb', $defaults['host']);
     }
 
     public function testCanGetAndSetDriver()
@@ -79,7 +79,7 @@ class DBCredentialsTest extends \Codeception\TestCase\Test
 
     public function testGetEntityPath()
     {
-        $this->assertNull($this->creds->getEntityPath());
+        $this->assertEmpty($this->creds->getEntityPath());
     }
 
     public function testAddToContainer()
@@ -87,12 +87,11 @@ class DBCredentialsTest extends \Codeception\TestCase\Test
         ContainerService::getInstance()->registerToContainer($this->creds);
         $creds = ContainerService::getInstance()->getContainer()['db.credentials'];
         $this->assertTrue(is_array($creds));
-        $this->assertArrayHasKey('driver',$creds);
-        $this->assertArrayHasKey('dbname',$creds);
-        $this->assertArrayHasKey('user',$creds);
-        $this->assertArrayHasKey('password',$creds);
+        $this->assertArrayHasKey('driver', $creds);
+        $this->assertArrayHasKey('dbname', $creds);
+        $this->assertArrayHasKey('user', $creds);
+        $this->assertArrayHasKey('password', $creds);
     }
-
 
 
 }

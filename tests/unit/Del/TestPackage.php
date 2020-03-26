@@ -3,7 +3,7 @@
 namespace DelTesting;
 
 use Del\Common\Container\RegistrationInterface;
-use Pimple\Container;
+use Barnacle\Container;
 
 class TestPackage implements RegistrationInterface
 {
@@ -18,7 +18,7 @@ class TestPackage implements RegistrationInterface
     /**
      * @return string
      */
-    function getEntityPath()
+    function getEntityPath(): string
     {
         return 'tests/unit';
     }
@@ -26,7 +26,7 @@ class TestPackage implements RegistrationInterface
     /**
      * @return mixed
      */
-    function hasEntityPath()
+    function hasEntityPath(): bool
     {
         return true;
     }

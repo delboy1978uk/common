@@ -5,72 +5,83 @@ $path = file_exists('vendor/autoload.php') ? 'vendor/autoload.php' : '../../../a
 
 require_once($path);
 
+use Barnacle\RegistrationInterface;
 use Del\Common\Command\Migration;
 use Del\Common\ContainerService;
 use Del\Common\Config\DbCredentials;
 use Del\Common\Util\MigrantUtil;
-use Doctrine\DBAL\Migrations\Configuration\Configuration;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\AbstractCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\DiffCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\ExecuteCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\GenerateCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\StatusCommand;
-use Doctrine\DBAL\Migrations\Tools\Console\Command\VersionCommand;
+use Doctrine\Migrations\Configuration\Configuration;
+use Doctrine\Migrations\Tools\Console\Command\AbstractCommand;
+use Doctrine\Migrations\Tools\Console\Command\DiffCommand;
+use Doctrine\Migrations\Tools\Console\Command\ExecuteCommand;
+use Doctrine\Migrations\Tools\Console\Command\GenerateCommand;
+use Doctrine\Migrations\Tools\Console\Command\StatusCommand;
+use Doctrine\Migrations\Tools\Console\Command\VersionCommand;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 
 $credentials = new DbCredentials();
 $containerSvc = ContainerService::getInstance();
 $config = [];
-$configFile = 'config/db.php';
+
+if (file_exists('config/bone-db.php')) {
+    $config = require_once 'config/bone-db.php';
+} elseif (file_exists('.migrant')) {
+    $config = require_once '.migrant';
+}
 
 if (getenv('APPLICATION_ENV')) {
     $env = getenv('APPLICATION_ENV');
-    if (file_exists('config/' . $env . '/db.php')) {
-        $configFile = 'config/' . $env . '/db.php';
+    if (file_exists('config/' . $env . '/bone-db.php')) {
+        $configFile = 'config/' . $env . '/bone-db.php';
+        $config = array_merge($config, require_once $configFile);
     }
 }
-
-$config = require_once $configFile;
 
 if (file_exists('config/packages.php')) {
     $config = array_merge($config, require_once 'config/packages.php');
 }
 
-if (file_exists('migrant-cfg.php')) {
-    $config = require_once 'migrant-cfg.php';
-}
-
-if (file_exists('migrant-cfg.local.php')) {
-    $config = array_merge($config, require_once 'migrant-cfg.local.php');
+if (file_exists('.migrant-local')) {
+    $config = array_merge($config, require_once '.migrant-local');
 }
 
 if (empty($config)) {
     echo "No config found.\n";
-    echo 'Please add a "db" and "packages" config, in either config/db.php, config/packages.php, or migrant-cfg.php';
+    echo 'Please add a "db" and "packages" config, in either config/bone-db.php, config/packages.php, or .migrant';
 } else {
 
     $db = $config['db'];
     $database = $db['database'] ?: $db['dbname'];
     $password = $db['pass'] ?: $db['password'];
 
-    $credentials->setDriver($db['driver'])
-        ->setDatabase($database)
-        ->setUser($db['user'])
-        ->setHost($db['host'])
-        ->setPassword($password);
+    $credentials->setDriver($db['driver']);
+    $credentials->setDatabase($database);
+    $credentials->setUser($db['user']);
+    $credentials->setHost($db['host']);
+    $credentials->setPassword($password);
 
     // Merge all the package dependencies
     $migrantUtil = new MigrantUtil();
     $requiredPackages = $config['packages'] ?: [];
     $packages = $migrantUtil->processDependencies($requiredPackages);
     foreach ($packages as $package) {
-        $containerSvc->addEntityPath('vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Entity');
+        $entityPath = 'vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Entity';
+        if (class_exists($package)) {
+            $package = new $package();
+            if ($package instanceof RegistrationInterface) {
+                $entityPath = $package->getEntityPath();
+            }
+        }
+
+        if (realpath($entityPath)) {
+            $containerSvc->addEntityPath($entityPath);
+        }
+
     }
-    
+
     $containerSvc->setDbCredentials($credentials);
     $container = $containerSvc->getContainer();
 

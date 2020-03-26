@@ -1,8 +1,8 @@
 <?php
 namespace Del\Common;
 
-use Pimple\Container as PimpleContainer;
-use Del\Common\Container\RegistrationInterface;
+use Barnacle\Container;
+use Barnacle\RegistrationInterface;
 use Del\Common\Config\DbCredentials;
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManager;
 class ContainerService
 {
     /**
-     * @var PimpleContainer
+     * @var Container
      */
     private $container;
 
@@ -30,17 +30,20 @@ class ContainerService
     /** @var \Doctrine\ORM\Configuration $config */
     private $config;
 
-    public function __construct(){}
-    public function __clone(){}
+    private function __construct(){}
+    private function __clone(){}
 
-    public static function getInstance()
+    /**
+     * @param Container|null $container
+     * @return ContainerService|null
+     */
+    public static function getInstance(Container $container = null)
     {
         static $inst = null;
         if($inst === null)
         {
             $inst = new ContainerService();
-            $inst->container = new PimpleContainer();
-
+            $inst->container = $container ?: new Container();
             $inst->paths = $inst->initEntityPaths();
         }
         return $inst;
@@ -81,7 +84,8 @@ class ContainerService
 
 
     /**
-     * @return PimpleContainer
+     * @return Container
+     * @throws \Doctrine\ORM\ORMException
      */
     public function getContainer()
     {
@@ -100,6 +104,7 @@ class ContainerService
 
             // The Doctrine Entity Manager
             $this->container['doctrine.entity_manager'] = $entityManager;
+            $this->container[EntityManager::class] = $entityManager;
             $this->container['dbInitialised'] = true;
 
         }
@@ -112,7 +117,6 @@ class ContainerService
             $this->config->setProxyDir($this->proxyPath);
         }
     }
-
 
 
     /**
@@ -147,7 +151,6 @@ class ContainerService
     }
 
 
-
     /**
      * @return DbCredentials
      */
@@ -166,7 +169,9 @@ class ContainerService
         return $this;
     }
 
-
+    /**
+     * @param RegistrationInterface $config
+     */
     public function registerToContainer(RegistrationInterface $config)
     {
         if($config->hasEntityPath()) {
