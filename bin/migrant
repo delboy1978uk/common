@@ -5,6 +5,7 @@ $path = file_exists('vendor/autoload.php') ? 'vendor/autoload.php' : '../../../a
 
 require_once($path);
 
+use Barnacle\EntityRegistrationInterface;
 use Barnacle\RegistrationInterface;
 use Del\Common\Command\Migration;
 use Del\Common\ContainerService;
@@ -71,7 +72,7 @@ if (empty($config)) {
         $entityPath = 'vendor' . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'Entity';
         if (class_exists($package)) {
             $package = new $package();
-            if ($package instanceof RegistrationInterface) {
+            if ($package instanceof EntityRegistrationInterface) {
                 $entityPath = $package->getEntityPath();
             }
         }
