@@ -2,6 +2,7 @@
 namespace Del\Common;
 
 use Barnacle\Container;
+use Barnacle\EntityRegistrationInterface;
 use Barnacle\RegistrationInterface;
 use Del\Common\Config\DbCredentials;
 use Doctrine\ORM\Tools\Setup;
@@ -174,9 +175,10 @@ class ContainerService
      */
     public function registerToContainer(RegistrationInterface $config)
     {
-        if($config->hasEntityPath()) {
+        if($config instanceof EntityRegistrationInterface) {
             $this->addEntityPath($config->getEntityPath());
         }
+
         $config->addToContainer($this->container);
     }
 }
