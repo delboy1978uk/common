@@ -27,7 +27,7 @@ $containerSvc->registerToContainer($registrationInterface); // See below
 ```
 ## Container Registration Interface
 You can create a class in your own packages that will register any definitions that go in the container. Just implement
-Del\Common\Container\RegistrationInterface. E.g.
+Barnacle\RegistrationInterface. E.g.
 ```php
 namespace My\Config\Container;
 
