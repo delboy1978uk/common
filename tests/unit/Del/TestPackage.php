@@ -2,8 +2,8 @@
 
 namespace DelTesting;
 
-use Del\Common\Container\RegistrationInterface;
 use Barnacle\Container;
+use Barnacle\RegistrationInterface;
 
 class TestPackage implements RegistrationInterface
 {

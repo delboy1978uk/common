@@ -31,10 +31,11 @@ Del\Common\Container\RegistrationInterface. E.g.
 ```php
 namespace My\Config\Container;
 
-use Del\Common\Container\RegistrationInterface;
-use My\Repository\Dog as DogRepository;
+
+use Barnacle\Container;
+use Barnacle\RegistrationInterface;
 use Doctrine\ORM\EntityManager;
-use Pimple\Container;
+use My\Repository\Dog as DogRepository;
 
 class DogPackage implements RegistrationInterface
 {
