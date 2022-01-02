@@ -11,12 +11,12 @@
     "require": {
       "delboy1978uk/barnacle": "^2.2",
       "doctrine/orm": "^2.6.3",
-      "doctrine/migrations": "2.2",
+      "doctrine/migrations": "^2.2",
       "symfony/console": "^5.0"
     },
     "require-dev":{
         "roave/security-advisories": "dev-master",
-        "codeception/codeception": "4.0",
+        "codeception/codeception": "^4.1",
         "codeception/module-asserts": "^1.1"
     },
     "autoload":{
